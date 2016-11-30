@@ -1,0 +1,2 @@
+# AndroidDemoApp
+Simple tip calculator 
