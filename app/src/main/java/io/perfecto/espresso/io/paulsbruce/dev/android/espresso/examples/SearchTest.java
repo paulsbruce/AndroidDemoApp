@@ -1,7 +1,9 @@
-package com.example.perfecto.tipcalculator;
+package io.perfecto.espresso.io.paulsbruce.dev.android.espresso.examples;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+
+import com.example.perfecto.tipcalculator.CalcTipActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

@@ -1,8 +1,11 @@
-package com.example.perfecto.tipcalculator;
+package io.perfecto.espresso.io.paulsbruce.dev.android.espresso.examples;
 
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+
+import com.example.perfecto.tipcalculator.CalcTipActivity;
+import com.example.perfecto.tipcalculator.R;
 
 import io.perfecto.espresso.annotations.KeySmokeTest;
 
@@ -28,14 +31,12 @@ public class BasicTest {
     @Rule
     public ActivityTestRule<CalcTipActivity> mActivityRule = new ActivityTestRule<>(CalcTipActivity.class);
 
-    @KeySmokeTest
     @Test
-    public void enterStaticData() {
+    public void enterStaticDataAndsValidate() {
 
         // set input values
-        
 
-        onView(withId(R.id.bill_value))
+        onView(ViewMatchers.withId(R.id.bill_value))
                 .perform(replaceText("28.73"));
 
         onView(withId(R.id.tip_percent_input))
