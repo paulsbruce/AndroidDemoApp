@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 WORKSPACE="$1" # the build workspace directory of the Android project
 BUILD_VARIANT="$2" # the filename prefix (i.e. 'app-debug') of the app and test APK binaries
