@@ -60,7 +60,9 @@ then
 fi
 EXECUTION_ID=$(python -c 'import sys, json; print json.load(open("/tmp/pResp"))["executionId"]')
 REPORT_KEY=$(python -c 'import sys, json; print json.load(open("/tmp/pResp"))["reportKey"]')
+REPORT_URL=$(python -c 'import sys, json; print json.load(open("/tmp/pResp"))["singleTestReportUrl"]')
 echo "Report Key: "$REPORT_KEY
+echo "{ 'reportUrl' : '$REPORT_URL' }"
 
 ## open the device
 echo "Allocating device $HANDSET_ID..."
@@ -97,6 +99,7 @@ RESULT_DESCRIPTION=$(python -c 'import sys, json; print json.load(open("/tmp/pRe
 if [[ $RESULT_CODE == "SUCCEEDED" ]]
 then
   echo "Espresso tests passed perfect[o]ly!"
+  EXIT_CODE=0
 else
   echo "Failed to execute Espresso tests.\n$RESULT_DESCRIPTION"
   EXIT_CODE=6
@@ -110,9 +113,6 @@ CLOSE_STATUS=$(python -c 'import sys, json; print json.load(open("/tmp/pResp"))[
 ## end execution
 echo "Finalizing cloud execution session..."
 curl -s -N "$API_BASE_URL/executions/$EXECUTION_ID?operation=end&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD" > /tmp/pResp
-
-# collect report
-
 
 rm /tmp/pResp
 exit $EXIT_CODE
