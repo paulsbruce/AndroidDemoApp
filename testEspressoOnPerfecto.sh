@@ -105,6 +105,16 @@ else
   EXIT_CODE=6
 fi
 
+echo "Obtaining execution details for stdout..."
+curl -s -N "$API_BASE_URL/services/reports/$REPORT_KEY?operation=download&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD" > /tmp/pResp
+while [[ "$(fuser /tmp/pResp)" ]]; do sleep 1; done
+FIRST_ACTUAL_DATA=$(python -c 'import sys; import xml.etree.ElementTree as ET; print ET.parse("/Users/paulb/Downloads/controller_17-01-09_00_16_26_22750.xml").find(".//dataItem[@label=\"actual\"]")[0].text')
+if [[ ${#FIRST_ACTUAL_DATA} != 0 ]]
+then
+  echo $FIRST_ACTUAL_DATA
+fi
+
+
 ## close the device
 echo "Closing device..."
 curl -s -N "$API_BASE_URL/executions/$EXECUTION_ID?operation=command&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&command=device&subcommand=close&param.deviceId=$HANDSET_ID" > /tmp/pResp
