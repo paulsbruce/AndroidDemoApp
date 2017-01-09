@@ -131,18 +131,6 @@ else
   EXIT_CODE=6
 fi
 
-sleep 5
-
-echo "Obtaining execution details for stdout..."
-curl -s -N "$API_BASE_URL/services/reports/$REPORT_KEY?operation=download&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD" > /tmp/pResp
-while [[ "$(fuser /tmp/pResp)" ]]; do sleep 1; done
-FIRST_ACTUAL_DATA=$(python -c 'import sys; import xml.etree.ElementTree as ET; print ET.parse("/tmp/pResp").find(".//dataItem[@label=\"actual\"]")[0].text')
-if [[ ${#FIRST_ACTUAL_DATA} != 0 ]]
-then
-  echo $FIRST_ACTUAL_DATA
-fi
-cat /tmp/pResp
-
 closeUpShop
 
 exit $EXIT_CODE
