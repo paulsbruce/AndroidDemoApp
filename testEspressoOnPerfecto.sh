@@ -139,6 +139,7 @@ if [[ ${#FIRST_ACTUAL_DATA} != 0 ]]
 then
   echo $FIRST_ACTUAL_DATA
 fi
+cat /tmp/pResp
 
 closeUpShop
 
