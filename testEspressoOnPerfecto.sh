@@ -131,6 +131,8 @@ else
   EXIT_CODE=6
 fi
 
+sleep 5
+
 echo "Obtaining execution details for stdout..."
 curl -s -N "$API_BASE_URL/services/reports/$REPORT_KEY?operation=download&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD" > /tmp/pResp
 while [[ "$(fuser /tmp/pResp)" ]]; do sleep 1; done
