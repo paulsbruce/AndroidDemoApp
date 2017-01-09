@@ -131,6 +131,7 @@ else
   EXIT_CODE=6
 fi
 
+
 closeUpShop
 
 exit $EXIT_CODE
