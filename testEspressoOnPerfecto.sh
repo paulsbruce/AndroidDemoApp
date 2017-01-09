@@ -43,7 +43,7 @@ while [[ "$(fuser /tmp/pResp)" ]]; do sleep 1; done
 HANDSET_ID=$(python -c 'import sys; import xml.etree.ElementTree as ET; print ET.parse("/tmp/pResp").getroot().findall("handset")[0].find("deviceId").text')
 if [[ ${#HANDSET_ID} == 0 ]]
 then
-  echo "Failed to find a suitable device. All devices may be in use at this time. "
+  echo "Failed to find a suitable device."
   cat /tmp/pResp
   exit 3
 fi
@@ -79,7 +79,7 @@ fi
 echo "Uploaded $APP_NAME to Perfecto repository."
 
 RESP=$(curl -s -N -X PUT "$API_BASE_URL/repositories/media/$TEST_NAME?operation=upload&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&overwrite=true&responseFormat=xml" --data-binary @$TEST_FILEPATH)
-if [[ ! $RESP == *"Success"* ]]
+if [[ $RESP != *"Success"* ]]
 then
   echo "Failed to upload $TEST_FILEPATH to Perfecto repository.\n$RESP"
   exit 5
