@@ -16,6 +16,27 @@ API_BASE_URL="https://$PERFECTO_CLOUD/services/"
 
 EXIT_CODE=5500 # unhandled
 
+function closeUpShop {
+  ## close the device
+  echo "Closing device..."
+  curl -s -N "$API_BASE_URL/executions/$EXECUTION_ID?operation=command&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&command=device&subcommand=close&param.deviceId=$HANDSET_ID" > /tmp/pResp
+  CLOSE_STATUS=$(python -c 'import sys, json; print json.load(open("/tmp/pResp"))["flowEndCode"]')
+
+  ## end execution
+  echo "Finalizing cloud execution session..."
+  curl -s -N "$API_BASE_URL/executions/$EXECUTION_ID?operation=end&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD" > /tmp/pResp
+
+  rm /tmp/pResp
+}
+function err_handler() {
+  if [[ $1 -ge 4 ]]
+  then
+    closeUpShop
+  fi
+  exit $1
+}
+
+
 if [[ $PERFECTO_PASSWORD == "." ]]
 then
   read -s -p "Enter your Perfecto password: " PERFECTO_PASSWORD
@@ -26,13 +47,13 @@ clear
 if [ ! -f $APP_FILEPATH ]
 then
   echo "Could not find app binary: $APP_FILEPATH" >&2
-  exit 1
+  EXIT_CODE=1
 fi
 # verify that the Espresso test APK exists
 if [ ! -f $TEST_FILEPATH ]
 then
   echo "Could not find test binary: $TEST_FILEPATH" >&2
-  exit 2
+  EXIT_CODE=2
 fi
 
 echo "Beginning main workflow..."
@@ -45,7 +66,7 @@ if [[ ${#HANDSET_ID} == 0 ]]
 then
   echo "Failed to find a suitable device."
   cat /tmp/pResp
-  exit 3
+  err_handler 3
 fi
 echo "Found device $HANDSET_ID"
 
@@ -55,14 +76,16 @@ while [[ "$(fuser /tmp/pResp)" ]]; do sleep 1; done
 RESP=$(cat /tmp/pResp)
 if [[ $RESP != *"executionId"* ]]
 then
-  echo "Failed to obtain a new execution.\n$RESP"
-  exit 4
+  echo "Failed to obtain a new execution."
+  echo "$RESP"
+  err_handler 4
 fi
 EXECUTION_ID=$(python -c 'import sys, json; print json.load(open("/tmp/pResp"))["executionId"]')
 REPORT_KEY=$(python -c 'import sys, json; print json.load(open("/tmp/pResp"))["reportKey"]')
 REPORT_URL=$(python -c 'import sys, json; print json.load(open("/tmp/pResp"))["singleTestReportUrl"]')
 echo "Report Key: "$REPORT_KEY
 echo "{ 'reportUrl' : '$REPORT_URL' }"
+
 
 ## open the device
 echo "Allocating device $HANDSET_ID..."
@@ -75,16 +98,18 @@ echo "Uploading artifacts to cloud repository..."
 RESP=$(curl -s -N -X PUT "$API_BASE_URL/repositories/media/$APP_NAME?operation=upload&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&overwrite=true&responseFormat=xml" --data-binary @$APP_FILEPATH)
 if [[ $RESP != *"Success"* ]]
 then
-  echo "Failed to upload $APP_FILEPATH to Perfecto repository.\n$RESP"
-  exit 4
+  echo "Failed to upload $APP_FILEPATH to Perfecto repository."
+  echo "$RESP"
+  err_handler 5
 fi
 echo "Uploaded $APP_NAME to Perfecto repository."
 
 RESP=$(curl -s -N -X PUT "$API_BASE_URL/repositories/media/$TEST_NAME?operation=upload&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&overwrite=true&responseFormat=xml" --data-binary @$TEST_FILEPATH)
 if [[ $RESP != *"Success"* ]]
 then
-  echo "Failed to upload $TEST_FILEPATH to Perfecto repository.\n$RESP"
-  exit 5
+  echo "Failed to upload $TEST_FILEPATH to Perfecto repository."
+  echo "$RESP"
+  err_handler 6
 fi
 echo "Uploaded $TEST_NAME to Perfecto repository."
 
@@ -101,7 +126,8 @@ then
   echo "Espresso tests passed perfect[o]ly!"
   EXIT_CODE=0
 else
-  echo "Failed to execute Espresso tests.\n$RESULT_DESCRIPTION"
+  echo "Failed to execute Espresso tests."
+  echo "$RESULT_DESCRIPTION"
   EXIT_CODE=6
 fi
 
@@ -114,15 +140,6 @@ then
   echo $FIRST_ACTUAL_DATA
 fi
 
+closeUpShop
 
-## close the device
-echo "Closing device..."
-curl -s -N "$API_BASE_URL/executions/$EXECUTION_ID?operation=command&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&command=device&subcommand=close&param.deviceId=$HANDSET_ID" > /tmp/pResp
-CLOSE_STATUS=$(python -c 'import sys, json; print json.load(open("/tmp/pResp"))["flowEndCode"]')
-
-## end execution
-echo "Finalizing cloud execution session..."
-curl -s -N "$API_BASE_URL/executions/$EXECUTION_ID?operation=end&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD" > /tmp/pResp
-
-rm /tmp/pResp
 exit $EXIT_CODE
