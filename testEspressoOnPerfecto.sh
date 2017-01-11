@@ -75,7 +75,8 @@ echo "Uploaded $TEST_NAME to Perfecto repository."
 function waitUntilFileClosed() {
   local filepath=$1
   #while [[ "$(fuser $filepath)" ]]; do sleep 1; done
-  while [[ `lsof -- $filepath` ]]; do sleep 1; done
+  #while [[ "lsof -- $filepath" ]]; do sleep 1; done
+  while [[ "fuser $filepath" ]]; do sleep 1; done
 }
 function getJsonPath() {
   local input_filepath=$1
