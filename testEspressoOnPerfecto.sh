@@ -76,9 +76,12 @@ function waitUntilFileClosed() {
   local filepath=$1
   #while [[ "$(fuser $filepath)" ]]; do sleep 1; done # works on most linux distros, but leaves a bunch of chatter in stdout
   while true; do
-    if [ -f $filepath ] && [[ "$(lsof -- $filepath)" ]]
-    then
-        sleep 1;
+    if [ -f $filepath ] ; then
+        if [[ "$(lsof -- $filepath)" ]] ; then
+          sleep 1;
+        else
+          break
+        fi
     else
       break
     fi
@@ -154,18 +157,19 @@ function async_execute() {
       exit_f=6
     else
       #cat $handsets_filepath
-      description=$(getXmlPath $handsets_filepath $iterator "description")
       manufacturer=$(getXmlPath $handsets_filepath $iterator "manufacturer")
-      nativeImei=$(getXmlPath $handsets_filepath $iterator "nativeImei")
       model=$(getXmlPath $handsets_filepath $iterator "model")
       description=$(getXmlPath $handsets_filepath $iterator "description")
+      nativeImei=$(getXmlPath $handsets_filepath $iterator "nativeImei")
       language=$(getXmlPath $handsets_filepath $iterator "language")
       osVersion=$(getXmlPath $handsets_filepath $iterator "osVersion")
       resolution=$(getXmlPath $handsets_filepath $iterator "resolution")
       location=$(getXmlPath $handsets_filepath $iterator "location")
 
+      HANDSET_JSON="'manufacturer' : '$manufacturer', 'model' : '$model', 'description' : '$description', 'nativeImei' : '$nativeImei', 'language' : '$language', 'osVersion' : '$osVersion', 'resolution' : '$resolution', 'location' : '$location'"
+
     fi
-    echo "Found device $HANDSET_ID"
+    echo "Found device $HANDSET_ID $manufacturer $model $resolution $location"
   fi
 
   echo "Report Key: "$REPORT_KEY
@@ -180,7 +184,6 @@ function async_execute() {
     if [[ $OPEN_STATUS == "SUCCEEDED" ]]
     then
       HANDSET_ID=$HANDSET_ID
-      HANDSET_JSON="'manufacturer' : '$manufacturer', 'model' : '$model', 'description' : '$description', 'nativeImei' : '$nativeImei', 'language' : '$language', 'osVersion' : '$osVersion', 'resolution' : '$resolution', 'location' : '$location'"
     else
       exit_f=7
     fi
