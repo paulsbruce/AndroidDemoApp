@@ -77,7 +77,7 @@ function waitUntilFileClosed() {
   #while [[ "$(fuser $filepath)" ]]; do sleep 1; done # works on most linux distros, but leaves a bunch of chatter in stdout
   while true; do
     if [ -f $filepath ] ; then
-        if [[ "$(lsof -- $filepath)" ]] ; then
+        if [[ "$(lsof -w -- $filepath)" ]] ; then
           sleep 1;
         else
           break
