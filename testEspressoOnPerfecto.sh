@@ -69,17 +69,42 @@ then
 fi
 echo "Uploaded $TEST_NAME to Perfecto repository."
 
-# run Espresso test - each is its own execution
-echo "Executing Espresso tests..."
+
+
 
 function waitUntilFileClosed() {
   local filepath=$1
-  while [[ "$(fuser $filepath)" ]]; do sleep 1; done
+  #while [[ "$(fuser $filepath)" ]]; do sleep 1; done
+  while [[ `lsof -- $filepath` ]]; do sleep 1; done
+}
+function getJsonPath() {
+  local input_filepath=$1
+  local key_name=$2
+  local result
+  local tmpcmdf=$input_filepath".py"
+  echo "import sys, json; print json.load(open(\""$input_filepath"\"))[\""$key_name"\"]" > $tmpcmdf
+  waitUntilFileClosed $tmpcmdf
+  result=$(python $tmpcmdf)
+  rm $tmpcmdf
+  echo $result
+}
+function getXmlPath() {
+  local input_filepath=$1
+  local iterator=$2
+  local key_name=$3
+  local result
+  local tmpcmdf=$input_filepath".xml"
+  echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$input_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\""$key_name"\").text" > $tmpcmdf
+  waitUntilFileClosed $tmpcmdf
+  result=$(python $tmpcmdf)
+  rm $tmpcmdf
+  echo $result
 }
 
 function async_execute() {
   local iterator=$1
   local EXIT_CODES=$2
+  local handsets_filepath=$3
   local resp_s
   local exit_f=5500
   local EXECUTION_ID
@@ -93,7 +118,7 @@ function async_execute() {
   local tmpcmdf=$tmpfile".py"
 
   ## obtain a new execution
-  curl -s -N "$API_SVCS_URL/executions?operation=start&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&responseFormat=json" > "$tmpfile"
+  curl -s -N "$API_SVCS_URL/executions?operation=start&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&responseFormat=json" > $tmpfile
   waitUntilFileClosed "$tmpfile"
   resp_s=$(cat $tmpfile)
   if [[ $resp_s != *"executionId"* ]]
@@ -102,30 +127,45 @@ function async_execute() {
     echo "$resp_s"
     exit_f=5
   fi
-  echo "import sys, json; print json.load(open(\""$tmpfile"\"))[\"executionId\"]" > $tmpcmdf
-  EXECUTION_ID=$(python $tmpcmdf)
-  echo "import sys, json; print json.load(open(\""$tmpfile"\"))[\"reportKey\"]" > $tmpcmdf
-  REPORT_KEY=$(python $tmpcmdf)
-  echo "import sys, json; print json.load(open(\""$tmpfile"\"))[\"singleTestReportUrl\"]" > $tmpcmdf
-  REPORT_URL=$(python $tmpcmdf)
-  echo "Report Key: "$REPORT_KEY
-  echo "{ 'reportUrl' : '$REPORT_URL' }"
+  EXECUTION_ID=$(getJsonPath $tmpfile "executionId")
+  REPORT_KEY=$(getJsonPath $tmpfile "reportKey")
+  REPORT_URL=$(getJsonPath $tmpfile "singleTestReportUrl")
 
   if ! [[ -z "${EXECUTION_ID// }" ]]
   then
-  # select device
-    curl -s -N "$API_SVCS_URL/handsets?operation=list&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&status=Connected&inUse=false&os=Android&responseFormat=xml" > "$tmpfile"
-    waitUntilFileClosed "$tmpfile"
-    echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$tmpfile"\").getroot().findall(\"handset\")[0].find(\"deviceId\").text" > $tmpcmdf
+    # select device
+    echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"deviceId\").text" > $tmpcmdf
     HANDSET_ID=$(python $tmpcmdf)
     if [[ ${#HANDSET_ID} == 0 ]]
     then
       echo "Failed to find a suitable device."
-      cat $tmpfile
+      cat $handsets_filepath
       exit_f=6
+    else
+      #cat $handsets_filepath
+      description=$(getXmlPath $handsets_filepath $iterator "description")
+      manufacturer=$(getXmlPath $handsets_filepath $iterator "manufacturer")
+      nativeImei=$(getXmlPath $handsets_filepath $iterator "nativeImei")
+      model=$(getXmlPath $handsets_filepath $iterator "model")
+      description=$(getXmlPath $handsets_filepath $iterator "description")
+      language=$(getXmlPath $handsets_filepath $iterator "language")
+      osVersion=$(getXmlPath $handsets_filepath $iterator "osVersion")
+      resolution=$(getXmlPath $handsets_filepath $iterator "resolution")
+      location=$(getXmlPath $handsets_filepath $iterator "location")
+      country=$(getXmlPath $handsets_filepath $iterator "country")
+
+      echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"manufacturer\").text" > $tmpcmdf
+      manufacturer=$(python $tmpcmdf)
+      echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"nativeImei\").text" > $tmpcmdf
+      nativeImei=$(python $tmpcmdf)
+      echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"model\").text" > $tmpcmdf
+      model=$(python $tmpcmdf)
+
     fi
     echo "Found device $HANDSET_ID"
   fi
+
+  echo "Report Key: "$REPORT_KEY
 
   if ! [[ -z "${HANDSET_ID// }" ]]
   then
@@ -138,6 +178,7 @@ function async_execute() {
     if [[ $OPEN_STATUS == "SUCCEEDED" ]]
     then
       HANDSET_ID=$HANDSET_ID
+      HANDSET_JSON="'manufacturer' : '$manufacturer', 'model' : '$model', 'description' : '$description', 'nativeImei' : '$nativeImei', 'language' : '$language', 'osVersion' : '$osVersion', 'resolution' : '$resolution', 'location' : '$location', 'country' : '$country'"
     else
       exit_f=7
     fi
@@ -155,10 +196,12 @@ function async_execute() {
       echo "Espresso tests passed perfectly on handset $HANDSET_ID!"
       rm "$tmpfile"
       exit_f=0 #complete success
+      echo "{ 'success' : true, 'handset' : { $HANDSET_JSON }, 'reportUrl' : '$REPORT_URL' }"
     else
       echo "Failed to execute Espresso tests on handset $HANDSET_ID."
       echo "$RESULT_DESCRIPTION"
       exit_f=8
+      echo "{ 'success' : false, 'handset' : { $HANDSET_JSON }, 'reportUrl' : '$REPORT_URL' }"
     fi
 
     ## close the device
@@ -174,6 +217,9 @@ function async_execute() {
     ## end execution
     echo "Finalizing execution $EXECUTION_ID"
     curl -s -N "$API_SVCS_URL/executions/$EXECUTION_ID?operation=end&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD" > "$tmpfile"
+    if [[ -z "${HANDSET_ID// }" ]]; then # never got to handset assignment
+      echo "{ 'executionId' : '$EXECUTION_ID', 'success' : false, 'reportUrl' : '$REPORT_URL' }"
+    fi
   fi
 
   rm "$tmpfile"
@@ -185,22 +231,28 @@ function async_execute() {
 
 EXIT_CODES="/tmp/tmp.log"
 rm $EXIT_CODES 2>/dev/null
+
+# get a list of available handsets up front
+echo 'Retrieving available devices...'
+handsets_f=$(mktemp /tmp/pResp.hs.XXXXXXXXXXXXXXXX)
+curl -s -N "$API_SVCS_URL/handsets?operation=list&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&status=Connected&inUse=false&os=Android&responseFormat=xml" > "$handsets_f"
+waitUntilFileClosed "$handsets_f"
+
+# run Espresso test - each is its own execution
 for ((i=0; i<$MAX_DEVICES; i++)); do
-  async_execute $i $EXIT_CODES &
+  async_execute $i $EXIT_CODES $handsets_f &
 done
 
 wait
-
 waitUntilFileClosed "$EXIT_CODES"
+rm "$handsets_f"
 
 arr=()
 lines=$(cat $EXIT_CODES)
-echo ${lines[0]}
 for line in $lines; do
    arr+=("$line")
 done
 
-echo "finalizing ${#arr[@]}"
 if [[ ${#arr[@]} -gt 0 ]]; then
   EXIT_CODE=0
   for ((i=0; i<${#arr[@]}; i++)); do
@@ -209,7 +261,7 @@ if [[ ${#arr[@]} -gt 0 ]]; then
     fi
   done
 fi
-echo "after parallel executes, EXIT_CODE is $EXIT_CODE"
+echo "Final exit code for Espresso tests is: $EXIT_CODE"
 
 rm "$EXIT_CODES"
 
