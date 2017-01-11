@@ -75,7 +75,14 @@ echo "Uploaded $TEST_NAME to Perfecto repository."
 function waitUntilFileClosed() {
   local filepath=$1
   #while [[ "$(fuser $filepath)" ]]; do sleep 1; done # works on most linux distros, but leaves a bunch of chatter in stdout
-  while [[ "lsof -- $filepath" ]]; do sleep 1; done # for mac, but needs lsof installed in Docker/Alpine
+  while true; do
+    if [ -f $filepath ] && [[ "$(lsof -- $filepath)" ]]
+    then
+        sleep 1;
+    else
+      break
+    fi
+  done
 }
 function getJsonPath() {
   local input_filepath=$1
@@ -99,7 +106,10 @@ function getXmlPath() {
   waitUntilFileClosed $tmpcmdf
   result=$(python $tmpcmdf)
   waitUntilFileClosed $tmpcmdf
-  rm $tmpcmdf
+  if [ -f $tmpcmdf ]
+  then
+      rm $tmpcmdf
+  fi
   echo $result
 }
 
@@ -136,8 +146,7 @@ function async_execute() {
   if ! [[ -z "${EXECUTION_ID// }" ]]
   then
     # select device
-    echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"deviceId\").text" > $tmpcmdf
-    HANDSET_ID=$(python $tmpcmdf)
+    HANDSET_ID=$(getXmlPath $handsets_filepath $iterator "deviceId")
     if [[ ${#HANDSET_ID} == 0 ]]
     then
       echo "Failed to find a suitable device."
@@ -154,14 +163,6 @@ function async_execute() {
       osVersion=$(getXmlPath $handsets_filepath $iterator "osVersion")
       resolution=$(getXmlPath $handsets_filepath $iterator "resolution")
       location=$(getXmlPath $handsets_filepath $iterator "location")
-      country=$(getXmlPath $handsets_filepath $iterator "country")
-
-      echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"manufacturer\").text" > $tmpcmdf
-      manufacturer=$(python $tmpcmdf)
-      echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"nativeImei\").text" > $tmpcmdf
-      nativeImei=$(python $tmpcmdf)
-      echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"model\").text" > $tmpcmdf
-      model=$(python $tmpcmdf)
 
     fi
     echo "Found device $HANDSET_ID"
@@ -175,12 +176,11 @@ function async_execute() {
     echo "Allocating device $HANDSET_ID..."
     curl -s -N "$API_SVCS_URL/executions/$EXECUTION_ID?operation=command&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&command=device&subcommand=open&param.deviceId=$HANDSET_ID" > "$tmpfile"
     waitUntilFileClosed "$tmpfile"
-    echo "import sys, json; print json.load(open(\""$tmpfile"\"))[\"flowEndCode\"]" > $tmpcmdf
-    local OPEN_STATUS=$(python $tmpcmdf)
+    local OPEN_STATUS=$(getJsonPath $tmpfile "flowEndCode")
     if [[ $OPEN_STATUS == "SUCCEEDED" ]]
     then
       HANDSET_ID=$HANDSET_ID
-      HANDSET_JSON="'manufacturer' : '$manufacturer', 'model' : '$model', 'description' : '$description', 'nativeImei' : '$nativeImei', 'language' : '$language', 'osVersion' : '$osVersion', 'resolution' : '$resolution', 'location' : '$location', 'country' : '$country'"
+      HANDSET_JSON="'manufacturer' : '$manufacturer', 'model' : '$model', 'description' : '$description', 'nativeImei' : '$nativeImei', 'language' : '$language', 'osVersion' : '$osVersion', 'resolution' : '$resolution', 'location' : '$location'"
     else
       exit_f=7
     fi
@@ -189,10 +189,8 @@ function async_execute() {
     curl -s -N "$API_SVCS_URL/executions/$EXECUTION_ID?operation=command&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&command=espresso&subcommand=execute&param.handsetId=$HANDSET_ID&param.testPackage=$TEST_PACKAGE&param.debugApp=$APP_NAME&param.testApp=$TEST_NAME&param.failOnError=True&param.reportFormat=Raw&responseFormat=json" > "$tmpfile"
     sleep 1
     waitUntilFileClosed "$tmpfile"
-    echo "import sys, json; print json.load(open(\""$tmpfile"\"))[\"flowEndCode\"]" > $tmpcmdf
-    local RESULT_CODE=$(python $tmpcmdf)
-    echo "import sys, json; print json.load(open(\""$tmpfile"\"))[\"description\"]" > $tmpcmdf
-    local RESULT_DESCRIPTION=$(python $tmpcmdf)
+    local RESULT_CODE=$(getJsonPath $tmpfile "flowEndCode")
+    local RESULT_DESCRIPTION=$(getJsonPath $tmpfile "description")
     if [[ $RESULT_CODE == "SUCCEEDED" ]]
     then
       echo "Espresso tests passed perfectly on handset $HANDSET_ID!"
@@ -210,8 +208,7 @@ function async_execute() {
     echo "Closing device..."
     curl -s -N "$API_SVCS_URL/executions/$EXECUTION_ID?operation=command&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&command=device&subcommand=close&param.deviceId=$HANDSET_ID" > "$tmpfile"
     waitUntilFileClosed "$tmpfile"
-    echo "import sys, json; print json.load(open(\""$tmpfile"\"))[\"flowEndCode\"]" > $tmpcmdf
-    local CLOSE_STATUS=$(python $tmpcmdf)
+    local CLOSE_STATUS=$(getJsonPath $tmpfile "flowEndCode")
   fi
 
   if ! [[ -z "${EXECUTION_ID// }" ]]
@@ -239,6 +236,8 @@ echo 'Retrieving available devices...'
 handsets_f=$(mktemp /tmp/pResp.hs.XXXXXXXXXXXXXXXX)
 curl -s -N "$API_SVCS_URL/handsets?operation=list&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&status=Connected&inUse=false&os=Android&responseFormat=xml" > "$handsets_f"
 waitUntilFileClosed "$handsets_f"
+
+## NEED to add check for total available vs MAX_DEVICES requested
 
 # run Espresso test - each is its own execution
 for ((i=0; i<$MAX_DEVICES; i++)); do
