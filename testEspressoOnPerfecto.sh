@@ -74,9 +74,8 @@ echo "Uploaded $TEST_NAME to Perfecto repository."
 
 function waitUntilFileClosed() {
   local filepath=$1
-  #while [[ "$(fuser $filepath)" ]]; do sleep 1; done
-  #while [[ "lsof -- $filepath" ]]; do sleep 1; done
-  while [[ "fuser $filepath" ]]; do sleep 1; done
+  #while [[ "$(fuser $filepath)" ]]; do sleep 1; done # works on most linux distros, but leaves a bunch of chatter in stdout
+  while [[ "lsof -- $filepath" ]]; do sleep 1; done # for mac, but needs lsof installed in Docker/Alpine
 }
 function getJsonPath() {
   local input_filepath=$1
@@ -86,6 +85,7 @@ function getJsonPath() {
   echo "import sys, json; print json.load(open(\""$input_filepath"\"))[\""$key_name"\"]" > $tmpcmdf
   waitUntilFileClosed $tmpcmdf
   result=$(python $tmpcmdf)
+  waitUntilFileClosed $tmpcmdf
   rm $tmpcmdf
   echo $result
 }
@@ -98,6 +98,7 @@ function getXmlPath() {
   echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$input_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\""$key_name"\").text" > $tmpcmdf
   waitUntilFileClosed $tmpcmdf
   result=$(python $tmpcmdf)
+  waitUntilFileClosed $tmpcmdf
   rm $tmpcmdf
   echo $result
 }

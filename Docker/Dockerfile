@@ -5,6 +5,9 @@ RUN mkdir /var/cache/jenkins
 RUN chown -R jenkins:jenkins /var/log/jenkins
 RUN chown -R jenkins:jenkins /var/cache/jenkins
 
+RUN apt-get update && apt-get install -y apt-transport-https
+RUN apt-get -q -y install lsof
+
 RUN wget https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz -O /opt/android-sdk.tgz
 RUN tar zxvf /opt/android-sdk.tgz -C /opt/
 RUN rm /opt/android-sdk.tgz
