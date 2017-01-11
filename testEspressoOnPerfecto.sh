@@ -20,8 +20,7 @@ reNumeric='^[0-9]+$'
 
 
 if ! [[ $MAX_DEVICES =~ $reNumeric ]] ; then
-   echo "error: MAX_DEVICES is not a number" >&2;
-   exit $EXIT_CODE
+   MAX_DEVICES=1
 fi
 
 function err_handler() {
@@ -86,10 +85,10 @@ function async_execute() {
   local EXECUTION_ID
   local HANDSET_ID
 
-  local tmpfile="/tmp/pResp.$iterator"
+  local tmpfile="/tmp/pResp.XXXXXXXXXXXXXXXX"
   if [ ! -f $tmpfile ]
   then
-    tmpfile=$(mktemp /tmp/pResp.$iterator)
+    tmpfile=$(mktemp /tmp/pResp.XXXXXXXXXXXXXXXX)
   fi
   local tmpcmdf=$tmpfile".py"
 
@@ -116,7 +115,7 @@ function async_execute() {
   then
   # select device
     curl -s -N "$API_SVCS_URL/handsets?operation=list&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&status=Connected&inUse=false&os=Android&responseFormat=xml" > "$tmpfile"
-    while [[ "$(fuser $tmpfile)" ]]; do sleep 1; done
+    waitUntilFileClosed "$tmpfile"
     echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$tmpfile"\").getroot().findall(\"handset\")[0].find(\"deviceId\").text" > $tmpcmdf
     HANDSET_ID=$(python $tmpcmdf)
     if [[ ${#HANDSET_ID} == 0 ]]
@@ -133,7 +132,7 @@ function async_execute() {
     ## open the device
     echo "Allocating device $HANDSET_ID..."
     curl -s -N "$API_SVCS_URL/executions/$EXECUTION_ID?operation=command&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&command=device&subcommand=open&param.deviceId=$HANDSET_ID" > "$tmpfile"
-    while [[ "$(fuser $tmpfile)" ]]; do sleep 1; done
+    waitUntilFileClosed "$tmpfile"
     echo "import sys, json; print json.load(open(\""$tmpfile"\"))[\"flowEndCode\"]" > $tmpcmdf
     local OPEN_STATUS=$(python $tmpcmdf)
     if [[ $OPEN_STATUS == "SUCCEEDED" ]]
@@ -146,7 +145,7 @@ function async_execute() {
     echo "async execute on handset: " $HANDSET_ID
     curl -s -N "$API_SVCS_URL/executions/$EXECUTION_ID?operation=command&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&command=espresso&subcommand=execute&param.handsetId=$HANDSET_ID&param.testPackage=$TEST_PACKAGE&param.debugApp=$APP_NAME&param.testApp=$TEST_NAME&param.failOnError=True&param.reportFormat=Raw&responseFormat=json" > "$tmpfile"
     sleep 1
-    while [[ "$(fuser $tmpfile)" ]]; do sleep 1; done
+    waitUntilFileClosed "$tmpfile"
     echo "import sys, json; print json.load(open(\""$tmpfile"\"))[\"flowEndCode\"]" > $tmpcmdf
     local RESULT_CODE=$(python $tmpcmdf)
     echo "import sys, json; print json.load(open(\""$tmpfile"\"))[\"description\"]" > $tmpcmdf
@@ -165,7 +164,7 @@ function async_execute() {
     ## close the device
     echo "Closing device..."
     curl -s -N "$API_SVCS_URL/executions/$EXECUTION_ID?operation=command&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&command=device&subcommand=close&param.deviceId=$HANDSET_ID" > "$tmpfile"
-    while [[ "$(fuser $tmpfile)" ]]; do sleep 1; done
+    waitUntilFileClosed "$tmpfile"
     echo "import sys, json; print json.load(open(\""$tmpfile"\"))[\"flowEndCode\"]" > $tmpcmdf
     local CLOSE_STATUS=$(python $tmpcmdf)
   fi
@@ -192,7 +191,7 @@ done
 
 wait
 
-while [[ "$(fuser $EXIT_CODES)" ]]; do sleep 1; done
+waitUntilFileClosed "$EXIT_CODES"
 
 arr=()
 lines=$(cat $EXIT_CODES)
