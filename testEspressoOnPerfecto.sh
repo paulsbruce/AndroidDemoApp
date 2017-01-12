@@ -75,6 +75,7 @@ echo "Uploaded $TEST_NAME to Perfecto repository."
 function waitUntilFileClosed() {
   local filepath=$1
   #while [[ "$(fuser $filepath)" ]]; do sleep 1; done # works on most linux distros, but leaves a bunch of chatter in stdout
+  #local commented_out='
   while true; do
     if [ -f $filepath ] ; then
         if [[ "$(lsof -w -- $filepath)" ]] ; then
@@ -86,6 +87,7 @@ function waitUntilFileClosed() {
       break
     fi
   done
+  #'
 }
 function getJsonPath() {
   local input_filepath=$1
@@ -93,28 +95,24 @@ function getJsonPath() {
   local result
   local tmpcmdf=$input_filepath".py"
   echo "import sys, json; print json.load(open(\""$input_filepath"\"))[\""$key_name"\"]" > $tmpcmdf
-  waitUntilFileClosed $tmpcmdf
   result=$(python $tmpcmdf)
-  waitUntilFileClosed $tmpcmdf
   rm $tmpcmdf
   echo $result
 }
+comment_out='
 function getXmlPath() {
   local input_filepath=$1
-  local iterator=$2
+  local index=$2
   local key_name=$3
   local result
   local tmpcmdf=$input_filepath".xml"
-  echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$input_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\""$key_name"\").text" > $tmpcmdf
-  waitUntilFileClosed $tmpcmdf
+  #echo "$index $key_name"
+  echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$input_filepath"\").getroot().findall(\"handset\")["$index"].find(\""$key_name"\").text" > $tmpcmdf
   result=$(python $tmpcmdf)
-  waitUntilFileClosed $tmpcmdf
-  if [ -f $tmpcmdf ]
-  then
-      rm $tmpcmdf
-  fi
+  rm $tmpcmdf
   echo $result
 }
+'
 
 function async_execute() {
   local iterator=$1
@@ -124,6 +122,14 @@ function async_execute() {
   local exit_f=5500
   local EXECUTION_ID
   local HANDSET_ID
+  local manufacturer
+  local model
+  local description
+  local nativeImei
+  local language
+  local osVersion
+  local resolution
+  local location
 
   local tmpfile="/tmp/pResp.XXXXXXXXXXXXXXXX"
   if [ ! -f $tmpfile ]
@@ -149,27 +155,44 @@ function async_execute() {
   if ! [[ -z "${EXECUTION_ID// }" ]]
   then
     # select device
-    HANDSET_ID=$(getXmlPath $handsets_filepath $iterator "deviceId")
+    #HANDSET_ID=$(getXmlPath $handsets_filepath $iterator "deviceId")
+    local tmpcmdf=$tmpfile".py"
+    echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"deviceId\").text" > $tmpcmdf
+    HANDSET_ID=$(python $tmpcmdf)
+
     if [[ ${#HANDSET_ID} == 0 ]]
     then
       echo "Failed to find a suitable device."
       cat $handsets_filepath
       exit_f=6
     else
-      #cat $handsets_filepath
-      manufacturer=$(getXmlPath $handsets_filepath $iterator "manufacturer")
-      model=$(getXmlPath $handsets_filepath $iterator "model")
-      description=$(getXmlPath $handsets_filepath $iterator "description")
-      nativeImei=$(getXmlPath $handsets_filepath $iterator "nativeImei")
-      language=$(getXmlPath $handsets_filepath $iterator "language")
-      osVersion=$(getXmlPath $handsets_filepath $iterator "osVersion")
-      resolution=$(getXmlPath $handsets_filepath $iterator "resolution")
-      location=$(getXmlPath $handsets_filepath $iterator "location")
+      ##cat $handsets_filepath
+      #manufacturer=$(getXmlPath $handsets_filepath $iterator "manufacturer")
+      #model=$(getXmlPath $handsets_filepath $iterator "model")
+      #description=$(getXmlPath $handsets_filepath $iterator "description")
+      #nativeImei=$(getXmlPath $handsets_filepath $iterator "nativeImei")
+      #language=$(getXmlPath $handsets_filepath $iterator "language")
+      #osVersion=$(getXmlPath $handsets_filepath $iterator "osVersion")
+      #resolution=$(getXmlPath $handsets_filepath $iterator "resolution")
+      #location=$(getXmlPath $handsets_filepath $iterator "location")
+      echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"manufacturer\").text" > $tmpcmdf
+      manufacturer=$(python $tmpcmdf)
+      echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"model\").text" > $tmpcmdf
+      model=$(python $tmpcmdf)
+      echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"description\").text" > $tmpcmdf
+      description=$(python $tmpcmdf)
+      echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"osVersion\").text" > $tmpcmdf
+      osVersion=$(python $tmpcmdf)
+      echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"resolution\").text" > $tmpcmdf
+      resolution=$(python $tmpcmdf)
+      echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"location\").text" > $tmpcmdf
+      location=$(python $tmpcmdf)
+
 
       HANDSET_JSON="'manufacturer' : '$manufacturer', 'model' : '$model', 'description' : '$description', 'nativeImei' : '$nativeImei', 'language' : '$language', 'osVersion' : '$osVersion', 'resolution' : '$resolution', 'location' : '$location'"
 
+      echo "$iterator: Found device $HANDSET_ID $manufacturer $model $resolution $location"
     fi
-    echo "Found device $HANDSET_ID $manufacturer $model $resolution $location"
   fi
 
   echo "Report Key: "$REPORT_KEY
@@ -212,6 +235,7 @@ function async_execute() {
     curl -s -N "$API_SVCS_URL/executions/$EXECUTION_ID?operation=command&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&command=device&subcommand=close&param.deviceId=$HANDSET_ID" > "$tmpfile"
     waitUntilFileClosed "$tmpfile"
     local CLOSE_STATUS=$(getJsonPath $tmpfile "flowEndCode")
+    echo "Results of close: $HANDSET_ID = $CLOSE_STATUS"
   fi
 
   if ! [[ -z "${EXECUTION_ID// }" ]]
