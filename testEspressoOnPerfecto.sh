@@ -95,7 +95,9 @@ function getJsonPath() {
   local result
   local tmpcmdf=$input_filepath".py"
   echo "import sys, json; print json.load(open(\""$input_filepath"\"))[\""$key_name"\"]" > $tmpcmdf
+  waitUntilFileClosed "$tmpfile"
   result=$(python $tmpcmdf)
+  waitUntilFileClosed "$tmpfile"
   rm $tmpcmdf
   echo $result
 }

@@ -137,12 +137,24 @@ public class CalcTipActivity extends Activity {
                     return;
                 }
 
+                // we abstract this important algorithm from our view into their own application logic class
                 TipCalculator.TipCalculationResults calculation =
                         new TipCalculator().Calculate(totalBillInput, tipPercentValue, tipsForNumberOfPeople);
 
-                totalAmountToBePaid.setText(removeTrailingZero(String.valueOf(String.format("%.2f", calculation.TotalAmountForTheBill))));
-                totalAmountOfTipsToBePaid.setText(removeTrailingZero(String.valueOf(String.format("%.2f", calculation.PercentageOfTip))));
-                tipsPerPerson.setText(removeTrailingZero(String.valueOf(String.format("%.2f", calculation.TipPerEachPerson))));
+
+                if(false) { // bad idea to code the view to format away information (decimal rounding)
+
+                    totalAmountToBePaid.setText(removeTrailingZero(String.valueOf(String.format("%.2f", calculation.TotalAmountForTheBill))));
+                    totalAmountOfTipsToBePaid.setText(removeTrailingZero(String.valueOf(String.format("%.2f", calculation.PercentageOfTip))));
+                    tipsPerPerson.setText(removeTrailingZero(String.valueOf(String.format("%.2f", calculation.TipPerEachPerson))));
+
+                } else { // when application logic calculates currency to the correct precision/scale, no view formatting is needed
+
+                    totalAmountToBePaid.setText(removeTrailingZero(String.valueOf(calculation.TotalAmountForTheBill)));
+                    totalAmountOfTipsToBePaid.setText(removeTrailingZero(String.valueOf(calculation.PercentageOfTip)));
+                    tipsPerPerson.setText(removeTrailingZero(String.valueOf(calculation.TipPerEachPerson)));
+
+                }
             }
         });
     }

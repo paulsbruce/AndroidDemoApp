@@ -16,8 +16,8 @@ public class ExampleUnitTest {
                 28.73, 25, 2
         );
 
-        assertEquals(35.91, calculation.TotalAmountForTheBill, 0.0099);
-        assertEquals(7.18, calculation.PercentageOfTip, 0.0099);
-        assertEquals(3.59, calculation.TipPerEachPerson, 0.0099);
+        assertEquals(35.91, calculation.TotalAmountForTheBill, 0);
+        assertEquals(7.18, calculation.PercentageOfTip, 0);
+        assertEquals(3.59, calculation.TipPerEachPerson, 0);
     }
 }
