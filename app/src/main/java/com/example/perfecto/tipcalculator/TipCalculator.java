@@ -13,7 +13,7 @@ public class TipCalculator {
 
     public TipCalculationResults Calculate(double totalBillInput, double tipPercentValue, int tipsForNumberOfPeople) {
 
-        if(true) { // how not to handle arithmetic operations over currencies...floating point hell
+        if(false) { // how not to handle arithmetic operations over currencies...floating point hell
 
             double percentageOfTip = (totalBillInput * tipPercentValue) / 100;
             double totalAmountForTheBill = totalBillInput + percentageOfTip;
