@@ -245,6 +245,7 @@ function async_execute() {
     ## end execution
     echo "Finalizing execution $EXECUTION_ID"
     curl -s -N "$API_SVCS_URL/executions/$EXECUTION_ID?operation=end&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD" > "$tmpfile"
+    cat $tmpfile
     if [[ -z "${HANDSET_ID// }" ]]; then # never got to handset assignment
       echo "{ 'executionId' : '$EXECUTION_ID', 'success' : false, 'reportUrl' : '$REPORT_URL' }"
     fi
