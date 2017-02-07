@@ -214,6 +214,7 @@ function async_execute() {
     fi
 
     echo "async execute on handset: " $HANDSET_ID
+
     curl -s -N "$API_SVCS_URL/executions/$EXECUTION_ID?operation=command&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&command=espresso&subcommand=execute&param.handsetId=$HANDSET_ID&param.testPackage=$TEST_PACKAGE&param.debugApp=$APP_NAME&param.testApp=$TEST_NAME&param.filterByScope=small&param.failOnError=True&param.reportFormat=Raw&responseFormat=json" > "$tmpfile"
     sleep 1
     waitUntilFileClosed "$tmpfile"
