@@ -1,6 +1,7 @@
 package com.example.perfecto.tipcalculator;
 
 import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -29,6 +30,7 @@ public class BasicTest {
     public ActivityTestRule<CalcTipActivity> mActivityRule = new ActivityTestRule<>(CalcTipActivity.class);
 
     @KeySmokeTest
+    @SmallTest
     @Test
     public void enterStaticData() {
 
