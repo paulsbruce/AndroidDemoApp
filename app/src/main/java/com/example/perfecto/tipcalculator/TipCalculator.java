@@ -10,17 +10,18 @@ import java.util.Locale;
  * Separation of tip calculation algorithm from view logic.
  */
 
-public class TipCalculator {
+class TipCalculator {
 
-    public static boolean UseBigDecimalForCurrency = true;
+    static boolean UseBigDecimalForCurrency = true;
 
-    public TipCalculationResults Calculate(double totalBillInput, double tipPercentValue, int tipsForNumberOfPeople) {
+    TipCalculationResults Calculate(double totalBillInput, double tipPercentValue, int tipsForNumberOfPeople)
+    {
 
         if(UseBigDecimalForCurrency) { // handle currency operations in BigDecimal, then return to appropriate scale
 
             BigDecimal percentageOfTip = (BigDecimal.valueOf(totalBillInput).multiply(BigDecimal.valueOf(tipPercentValue))).divide(new BigDecimal(100), RoundingMode.HALF_EVEN);
             BigDecimal totalAmountForTheBill = BigDecimal.valueOf(totalBillInput).add(percentageOfTip);
-            BigDecimal tipPerEachPerson = percentageOfTip.divide(new BigDecimal((double)tipsForNumberOfPeople));
+            BigDecimal tipPerEachPerson = percentageOfTip.divide(new BigDecimal((double)tipsForNumberOfPeople), RoundingMode.HALF_EVEN);
 
             int scale = Currency.getInstance(Locale.getDefault()).getDefaultFractionDigits();
             return new TipCalculationResults(
@@ -40,13 +41,13 @@ public class TipCalculator {
         }
     }
 
-    public class TipCalculationResults
+    class TipCalculationResults
     {
-        public final double PercentageOfTip;
-        public final double TotalAmountForTheBill;
-        public final double TipPerEachPerson;
+        final double PercentageOfTip;
+        final double TotalAmountForTheBill;
+        final double TipPerEachPerson;
 
-        public TipCalculationResults(double percentageOfTip, double totalAmountForTheBill, double tipPerEachPerson) {
+        TipCalculationResults(double percentageOfTip, double totalAmountForTheBill, double tipPerEachPerson) {
             this.PercentageOfTip = percentageOfTip;
             this.TotalAmountForTheBill = totalAmountForTheBill;
             this.TipPerEachPerson = tipPerEachPerson;
