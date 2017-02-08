@@ -43,7 +43,7 @@ public class BasicTest {
                 .perform(typeText("25"));
 
         onView(withId(R.id.split_number_input))
-                .perform(typeText("2"));
+                .perform(typeText("20"));
 
         // perform the calculation
 
