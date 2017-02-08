@@ -123,6 +123,7 @@ public class CalcTipActivity extends Activity {
             }
         });
 
+
         calculateTips = (Button) findViewById(R.id.calculate_tips);
         calculateTips.setOnClickListener(new View.OnClickListener() {
             @Override

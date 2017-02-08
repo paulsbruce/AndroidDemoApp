@@ -6,6 +6,7 @@
 .DS_Store
 /build
 /captures
+app/build/intermediates/
 .idea/compiler.xml
 .idea/copyright/
 .idea/gradle.xml
