@@ -8,6 +8,7 @@ PERFECTO_USERNAME="$5" # the username of an account with rights to execute the E
 PERFECTO_PASSWORD="$6" # the password of an account with rights to execute the Espresso tests
 REPOSITORY_PATH="$7"
 MAX_DEVICES="$8"
+SCRIPT_NAME="$9"
 
 APP_NAME="$BUILD_VARIANT.apk"
 APP_FILEPATH="$WORKSPACE/app/build/outputs/apk/$APP_NAME"
@@ -21,6 +22,9 @@ reNumeric='^[0-9]+$'
 
 if ! [[ $MAX_DEVICES =~ $reNumeric ]] ; then
    MAX_DEVICES=1
+fi
+if [[ -z "${SCRIPT_NAME// }" ]]; then # never got to handset assignment
+  SCRIPT_NAME="Build Server"
 fi
 
 function err_handler() {
@@ -214,7 +218,6 @@ function async_execute() {
     fi
 
     echo "async execute on handset: " $HANDSET_ID
-
     curl -s -N "$API_SVCS_URL/executions/$EXECUTION_ID?operation=command&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&command=espresso&subcommand=execute&param.handsetId=$HANDSET_ID&param.testPackage=$TEST_PACKAGE&param.debugApp=$APP_NAME&param.testApp=$TEST_NAME&param.filterByScope=small&param.failOnError=True&param.reportFormat=Raw&responseFormat=json" > "$tmpfile"
     sleep 1
     waitUntilFileClosed "$tmpfile"
