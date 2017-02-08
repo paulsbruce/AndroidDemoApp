@@ -124,6 +124,7 @@ function async_execute() {
   local iterator=$1
   local EXIT_CODES=$2
   local handsets_filepath=$3
+  local scriptName=$4
   local resp_s
   local exit_f=5500
   local EXECUTION_ID
@@ -146,7 +147,7 @@ function async_execute() {
 
   echo "SCRIPT_NAME: $SCRIPT_NAME"
   ## obtain a new execution
-  curl -s -N "$API_SVCS_URL/executions?operation=start&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&scriptName=$SCRIPT_NAME&responseFormat=json" > $tmpfile
+  curl -s -N "$API_SVCS_URL/executions?operation=start&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&scriptName=$scriptName&responseFormat=json" > $tmpfile
   waitUntilFileClosed "$tmpfile"
   resp_s=$(cat $tmpfile)
   if [[ $resp_s != *"executionId"* ]]
@@ -276,7 +277,7 @@ waitUntilFileClosed "$handsets_f"
 
 # run Espresso test - each is its own execution
 for ((i=0; i<$MAX_DEVICES; i++)); do
-  async_execute $i $EXIT_CODES $handsets_f &
+  async_execute $i $EXIT_CODES $handsets_f $SCRIPT_NAME &
 done
 
 wait
