@@ -23,6 +23,7 @@ class TipCalculator {
             BigDecimal totalAmountForTheBill = BigDecimal.valueOf(totalBillInput).add(percentageOfTip);
             BigDecimal tipPerEachPerson = percentageOfTip.divide(new BigDecimal((double)tipsForNumberOfPeople), RoundingMode.HALF_EVEN);
 
+            // scale work
             int scale = Currency.getInstance(Locale.getDefault()).getDefaultFractionDigits();
             return new TipCalculationResults(
                     percentageOfTip.setScale(scale, RoundingMode.HALF_EVEN).doubleValue(),
