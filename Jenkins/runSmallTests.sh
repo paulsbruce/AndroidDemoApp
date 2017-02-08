@@ -145,7 +145,7 @@ function async_execute() {
   local tmpcmdf=$tmpfile".py"
 
   ## obtain a new execution
-  curl -s -N "$API_SVCS_URL/executions?operation=start&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&responseFormat=json" > $tmpfile
+  curl -s -N "$API_SVCS_URL/executions?operation=start&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&scriptName=$SCRIPT_NAME&responseFormat=json" > $tmpfile
   waitUntilFileClosed "$tmpfile"
   resp_s=$(cat $tmpfile)
   if [[ $resp_s != *"executionId"* ]]
