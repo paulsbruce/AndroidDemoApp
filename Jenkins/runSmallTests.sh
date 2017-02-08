@@ -174,15 +174,6 @@ function async_execute() {
       cat $handsets_filepath
       exit_f=6
     else
-      ##cat $handsets_filepath
-      #manufacturer=$(getXmlPath $handsets_filepath $iterator "manufacturer")
-      #model=$(getXmlPath $handsets_filepath $iterator "model")
-      #description=$(getXmlPath $handsets_filepath $iterator "description")
-      #nativeImei=$(getXmlPath $handsets_filepath $iterator "nativeImei")
-      #language=$(getXmlPath $handsets_filepath $iterator "language")
-      #osVersion=$(getXmlPath $handsets_filepath $iterator "osVersion")
-      #resolution=$(getXmlPath $handsets_filepath $iterator "resolution")
-      #location=$(getXmlPath $handsets_filepath $iterator "location")
       echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"manufacturer\").text" > $tmpcmdf
       manufacturer=$(python $tmpcmdf)
       echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"model\").text" > $tmpcmdf
@@ -195,6 +186,15 @@ function async_execute() {
       resolution=$(python $tmpcmdf)
       echo "import sys; import xml.etree.ElementTree as ET; print ET.parse(\""$handsets_filepath"\").getroot().findall(\"handset\")["$iterator"].find(\"location\").text" > $tmpcmdf
       location=$(python $tmpcmdf)
+      ##cat $handsets_filepath
+      #manufacturer=$(getXmlPath $handsets_filepath $iterator "manufacturer")
+      #model=$(getXmlPath $handsets_filepath $iterator "model")
+      #description=$(getXmlPath $handsets_filepath $iterator "description")
+      #nativeImei=$(getXmlPath $handsets_filepath $iterator "nativeImei")
+      #language=$(getXmlPath $handsets_filepath $iterator "language")
+      #osVersion=$(getXmlPath $handsets_filepath $iterator "osVersion")
+      #resolution=$(getXmlPath $handsets_filepath $iterator "resolution")
+      #location=$(getXmlPath $handsets_filepath $iterator "location")
 
 
       HANDSET_JSON="'manufacturer' : '$manufacturer', 'model' : '$model', 'description' : '$description', 'nativeImei' : '$nativeImei', 'language' : '$language', 'osVersion' : '$osVersion', 'resolution' : '$resolution', 'location' : '$location'"
