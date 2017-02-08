@@ -19,7 +19,6 @@ API_SVCS_URL="https://$PERFECTO_CLOUD/services/"
 EXIT_CODE=5500 # unhandled
 reNumeric='^[0-9]+$'
 
-
 if ! [[ $MAX_DEVICES =~ $reNumeric ]] ; then
    MAX_DEVICES=1
 fi

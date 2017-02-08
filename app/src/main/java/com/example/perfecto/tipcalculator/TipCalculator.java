@@ -14,8 +14,7 @@ public class TipCalculator {
 
     public static boolean UseBigDecimalForCurrency = true;
 
-    public TipCalculationResults Calculate(double totalBillInput, double tipPercentValue, int tipsForNumberOfPeople)
-    {
+    public TipCalculationResults Calculate(double totalBillInput, double tipPercentValue, int tipsForNumberOfPeople) {
 
         if(UseBigDecimalForCurrency) { // handle currency operations in BigDecimal, then return to appropriate scale
 
