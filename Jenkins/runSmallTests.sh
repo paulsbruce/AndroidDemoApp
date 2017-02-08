@@ -230,7 +230,7 @@ function async_execute() {
       exit_f=0 #complete success
       echo "{ 'success' : true, 'handset' : { $HANDSET_JSON }, 'reportUrl' : '$REPORT_URL' }"
     else
-      echo "Failed to execute Espresso tests on handset $HANDSET_ID."
+      echo "Espresso tests on handset $HANDSET_ID failed."
       echo "$RESULT_DESCRIPTION"
       exit_f=8
       echo "{ 'success' : false, 'handset' : { $HANDSET_JSON }, 'reportUrl' : '$REPORT_URL' }"
