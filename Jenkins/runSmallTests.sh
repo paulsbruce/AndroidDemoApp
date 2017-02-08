@@ -144,6 +144,7 @@ function async_execute() {
   fi
   local tmpcmdf=$tmpfile".py"
 
+  echo "SCRIPT_NAME: $SCRIPT_NAME"
   ## obtain a new execution
   curl -s -N "$API_SVCS_URL/executions?operation=start&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&scriptName=$SCRIPT_NAME&responseFormat=json" > $tmpfile
   waitUntilFileClosed "$tmpfile"
