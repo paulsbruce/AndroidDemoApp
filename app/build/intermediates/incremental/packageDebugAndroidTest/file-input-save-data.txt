@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Fri Jan 13 09:16:15 EST 2017
+#Tue Feb 14 15:08:45 PST 2017
 1.base=/Users/paulb/git/paulsbruce/AndroidDemoApp/app/build/intermediates/transforms/dex/androidTest/debug/folders/1000/1f/main
 4.file=/Users/paulb/git/paulsbruce/AndroidDemoApp/app/build/intermediates/transforms/mergeJavaRes/androidTest/debug/jars/2/1f/main.jar/junit/runner/smalllogo.gif
 1.file=/Users/paulb/git/paulsbruce/AndroidDemoApp/app/build/intermediates/transforms/dex/androidTest/debug/folders/1000/1f/main/classes.dex
