@@ -39,21 +39,21 @@
     </item>
     <item
         is-multidex="false"
-        jar="/Users/paulb/git/paulsbruce/AndroidDemoApp/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.1.0/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="24.0.1"
-        sha1="b266c8faa5af72e579b9da36ef35053ffed6ac64">
-        <dex dex="/Users/paulb/git/paulsbruce/AndroidDemoApp/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-25.1.0_235c5b6b5fc6f1dd5ed530e05b13b81716b5d247.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="/Users/paulb/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar"
         jumboMode="false"
         optimize="true"
         revision="24.0.1"
         sha1="6975da39a7040257bd51d21a231b76c915872d38">
         <dex dex="/Users/paulb/git/paulsbruce/AndroidDemoApp/app/build/intermediates/pre-dexed/debug/javax.inject-1_e4bda72d740f8cd47d586b14104e3b7ce7abc061.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/paulb/git/paulsbruce/AndroidDemoApp/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.1.0/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="24.0.1"
+        sha1="b266c8faa5af72e579b9da36ef35053ffed6ac64">
+        <dex dex="/Users/paulb/git/paulsbruce/AndroidDemoApp/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-25.1.0_235c5b6b5fc6f1dd5ed530e05b13b81716b5d247.jar" />
     </item>
     <item
         is-multidex="false"
