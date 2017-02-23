@@ -23,6 +23,13 @@ android {
     }
 }
 
+// Perfecto’s artifact repository
+repositories {
+    maven {
+        url 'http://repository-perfectomobile.forge.cloudbees.com/public/'
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -33,4 +40,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
     compile 'com.android.support.test.espresso:espresso-core:2.2.2'
+
+    // Reportium SDK
+    compile "com.perfecto.reporting-sdk:reportium-java:1.1.10"
+    // Reportium SDK addition for Allure users
+    compile "com.perfecto.reporting-sdk:reportium-allure-integration:1.1.10"
 }
