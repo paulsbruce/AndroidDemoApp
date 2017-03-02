@@ -2,5 +2,9 @@
     {
         "merged": "/Users/paulb/git/paulsbruce/AndroidDemoApp/app/build/intermediates/res/merged/debug/mipmap-hdpi/ic_launcher.png",
         "source": "/Users/paulb/git/paulsbruce/AndroidDemoApp/app/src/main/res/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Volumes/Private/git/paulsbruce/AndroidDemoApp/app/build/intermediates/res/merged/debug/mipmap-hdpi/ic_launcher.png",
+        "source": "/Volumes/Private/git/paulsbruce/AndroidDemoApp/app/src/main/res/mipmap-hdpi/ic_launcher.png"
     }
 ]

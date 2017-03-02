@@ -1,4 +1,4 @@
-#Tue Feb 14 15:08:45 PST 2017
-base.0=/Users/paulb/git/paulsbruce/AndroidDemoApp/app/build/intermediates/transforms/dex/androidTest/debug/folders/1000/1f/main
+#Sun Feb 26 09:08:14 EST 2017
+base.0=/Users/paulb/git/paulsbruce/AndroidDemoApp/app/build/intermediates/transforms/jack/androidTest/debug/folders/1000/1f/main
 renamed.0=classes.dex
-file.0=/Users/paulb/git/paulsbruce/AndroidDemoApp/app/build/intermediates/transforms/dex/androidTest/debug/folders/1000/1f/main/classes.dex
+file.0=/Users/paulb/git/paulsbruce/AndroidDemoApp/app/build/intermediates/transforms/jack/androidTest/debug/folders/1000/1f/main/classes.dex

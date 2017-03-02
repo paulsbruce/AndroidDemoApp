@@ -7,7 +7,7 @@
         android:targetSdkVersion="24" />
 
     <instrumentation
-        android:name="android.support.test.runner.AndroidJUnitRunner"
+        android:name="com.example.perfecto.tipcalculator.CustomRunner"
         android:functionalTest="false"
         android:handleProfiling="false"
         android:label="Tests for com.example.perfecto.tipcalculator"

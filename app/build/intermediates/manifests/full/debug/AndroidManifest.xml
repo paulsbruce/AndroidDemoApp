@@ -8,6 +8,11 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="24" />
 
+    <instrumentation
+        android:name=".CustomRunner"
+        android:label="CustomRunner for Perfecto Espresso"
+        android:targetPackage="com.example.perfecto.tipcalculator" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
