@@ -36,4 +36,8 @@
         <activity android:name=".PhotoActivity"></activity>
     </application>
 
+    <instrumentation android:name=".CustomRunner"
+        android:targetPackage="com.example.perfecto.tipcalculator"
+        android:label="CustomRunner for Perfecto Espresso"/>
+
 </manifest>

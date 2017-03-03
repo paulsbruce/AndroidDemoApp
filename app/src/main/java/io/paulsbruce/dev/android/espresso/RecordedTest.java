@@ -1,4 +1,4 @@
-package io.perfecto.espresso.io.paulsbruce.dev.android.espresso.examples;
+package io.paulsbruce.dev.android.espresso;
 
 
 import android.support.test.espresso.ViewInteraction;

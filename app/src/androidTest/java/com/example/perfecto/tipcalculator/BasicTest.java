@@ -1,6 +1,8 @@
 package com.example.perfecto.tipcalculator;
 
 import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.test.filters.RequiresDevice;
+import android.support.test.filters.SdkSuppress;
 import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -27,9 +29,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class BasicTest {
 
     @Rule
-    public ActivityTestRule<CalcTipActivity> mActivityRule = new ActivityTestRule<>(CalcTipActivity.class);
+    public ActivityTestRule<CalcTipActivity> mActivityRule = new ActivityTestRule<>(CalcTipActivity.class); //
 
     @KeySmokeTest
+    @RequiresDevice
+    @SdkSuppress(minSdkVersion=24)
     @SmallTest
     @Test
     public void enterStaticData() {
@@ -37,7 +41,7 @@ public class BasicTest {
         // set input values
 
         onView(withId(R.id.bill_value))
-                .perform(replaceText("28.73"));
+                .perform(replaceText("28.73")); //
 
         onView(withId(R.id.tip_percent_input))
                 .perform(typeText("25"));
