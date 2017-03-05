@@ -19,6 +19,12 @@ RUN chmod -R 755 /opt/android-sdk-linux
 RUN unzip /opt/android-sdk.zip -d /opt/android-sdk-linux
 RUN rm /opt/android-sdk.zip
 
+#RUN wget https://dl.google.com/android/repository/android-ndk-r14-linux-x86_64.zip -O /opt/android-ndk.zip
+#RUN mkdir /opt/android-sdk-linux/android-ndk
+#RUN chmod -R 755 /opt/android-sdk-linux/android-ndk
+#RUN unzip /opt/android-ndk.zip -d /opt/android-sdk-linux/android-ndk
+#RUN rm /opt/android-ndk.zip
+
 ## configure profile and environment variables
 RUN >/etc/profile.d/android.sh
 RUN sed -i '$ a\export ANDROID_HOME="/opt/android-sdk-linux"' /etc/profile.d/android.sh
