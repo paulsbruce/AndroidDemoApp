@@ -1,6 +1,5 @@
 package com.example.perfecto.tipcalculator;
 
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.RequiresDevice;
 import android.support.test.filters.SdkSuppress;
 import android.support.test.filters.SmallTest;

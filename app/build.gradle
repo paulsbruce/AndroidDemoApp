@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "com.example.perfecto.tipcalculator"
@@ -25,7 +25,7 @@ android {
 
     buildTypes {
         debug {
-            //testCoverageEnabled = true // gradle 3.3 workaround
+            testCoverageEnabled = true // gradle 3.3 workaround
         }
         release {
             minifyEnabled false
