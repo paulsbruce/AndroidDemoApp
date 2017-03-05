@@ -1,4 +1,0 @@
-#Mon Feb 27 08:51:13 EST 2017
-base.0=/Users/paulb/git/paulsbruce/AndroidDemoApp/app/build/intermediates/transforms/jack/debug/folders/1000/1f/main
-renamed.0=classes.dex
-file.0=/Users/paulb/git/paulsbruce/AndroidDemoApp/app/build/intermediates/transforms/jack/debug/folders/1000/1f/main/classes.dex
