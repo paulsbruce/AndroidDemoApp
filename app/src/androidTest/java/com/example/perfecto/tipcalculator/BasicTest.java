@@ -39,6 +39,7 @@ public class BasicTest {
 
         // set input values
 
+
         onView(withId(R.id.bill_value))
                 .perform(replaceText("28.73"));
 
