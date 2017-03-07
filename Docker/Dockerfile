@@ -35,7 +35,7 @@ RUN . /etc/profile
 RUN apt-get install git-core
 
 ## install Android SDK, auto-accepting terms of service
-RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | /opt/android-sdk-linux/tools/android update sdk --no-ui --all --filter platform-tools,android-25,build-tools-25.0.2,android-24,build-tools-24.0.1,tools,extra-android-support,extra-android-m2repository
+RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | /opt/android-sdk-linux/tools/android update sdk --no-ui --all --filter platform-tools,android-25,build-tools-25.0.2,android-24,build-tools-24.0.1,android-23,build-tools-23.0.3,android-21,build-tools-21.1.2,tools,extra-android-support,extra-android-m2repository
 
 RUN dpkg --add-architecture i386
 USER jenkins

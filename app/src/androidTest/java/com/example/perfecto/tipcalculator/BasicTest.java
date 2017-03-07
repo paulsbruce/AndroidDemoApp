@@ -32,7 +32,7 @@ public class BasicTest {
 
     @KeySmokeTest
     @RequiresDevice
-    @SdkSuppress(minSdkVersion=24)
+    @SdkSuppress(minSdkVersion=23)
     @SmallTest
     @Test
     public void enterStaticData() {
