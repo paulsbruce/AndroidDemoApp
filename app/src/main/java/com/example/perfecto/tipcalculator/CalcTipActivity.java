@@ -15,16 +15,12 @@
 package com.example.perfecto.tipcalculator;
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.test.espresso.IdlingResource;
-import android.support.test.espresso.IdlingResource.ResourceCallback;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import io.perfecto.espresso.utility.IdlingContainer;
 
 public class CalcTipActivity extends Activity {
     private EditText totalBillAmount;

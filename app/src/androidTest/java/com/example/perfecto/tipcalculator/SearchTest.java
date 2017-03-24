@@ -7,7 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import io.perfecto.espresso.annotations.SearchWorkflowTest;
+import com.example.perfecto.annotations.SearchWorkflowTest;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>

@@ -3,9 +3,9 @@ package com.example.perfecto.tipcalculator;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import io.perfecto.espresso.annotations.ActiveDebugTest;
-import io.perfecto.espresso.annotations.KeySmokeTest;
-import io.perfecto.espresso.utility.MoreActions;
+import com.example.perfecto.annotations.ActiveDebugTest;
+import com.example.perfecto.annotations.KeySmokeTest;
+import com.example.perfecto.utility.MoreActions;
 
 import org.junit.Rule;
 import org.junit.Test;

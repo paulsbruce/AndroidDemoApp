@@ -10,8 +10,8 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-        //testInstrumentationRunner 'com.example.perfecto.tipcalculator.CustomRunner'//'android.support.test.runner.AndroidJUnitRunner'
+        //testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        testInstrumentationRunner 'com.example.perfecto.tipcalculator.PerfectoEspressoRunner'//'android.support.test.runner.AndroidJUnitRunner'
 /*
         multiDexEnabled true
 
@@ -56,7 +56,7 @@ dependencies {
     compile 'com.android.support.test.espresso:espresso-core:2.2.2'
 
     // Reportium SDK
-    //compile "com.perfecto.reporting-sdk:reportium-java:1.1.10"
+    compile "com.perfecto.reporting-sdk:reportium-java:1.1.10"
     // Reportium SDK addition for Allure users
-    //compile "com.perfecto.reporting-sdk:reportium-allure-integration:1.1.10"
+    compile "com.perfecto.reporting-sdk:reportium-allure-integration:1.1.10"
 }

@@ -1,7 +1,6 @@
-package io.perfecto.espresso.utility;
+package com.example.perfecto.utility;
 
 import android.support.test.espresso.IdlingResource;
-import android.support.test.espresso.IdlingResource.ResourceCallback;
 import android.support.test.espresso.core.deps.guava.base.Supplier;
 
 import java.lang.reflect.ParameterizedType;
