@@ -45,7 +45,6 @@ public class PerfectoEspressoRunner extends CustomRunner {
             @Override
             public void testRunStarted(Description description) throws Exception {
 
-
                 Log.i(TAG, String.format("["+_deviceId+"]run started: %d tests", description.testCount()));
             }
 

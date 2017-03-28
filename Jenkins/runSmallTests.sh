@@ -55,7 +55,7 @@ fi
 echo "Beginning main workflow..."
 
 # upload to Perfecto cloud through API
-echo "Uploading artifacts to cloud repository..."
+echo "Uploading artifacts to cloud repository: $PERFECTO_CLOUD"
 RESP=$(curl -s -N -X PUT "$API_SVCS_URL/repositories/media/$APP_NAME?operation=upload&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&overwrite=true&responseFormat=xml" --data-binary @$APP_FILEPATH)
 if [[ $RESP != *"Success"* ]]
 then
