@@ -271,7 +271,7 @@ rm $EXIT_CODES 2>/dev/null
 # get a list of available handsets up front
 echo 'Retrieving available devices...'
 handsets_f=$(mktemp /tmp/pResp.hs.XXXXXXXXXXXXXXXX)
-curl -s -N "$API_SVCS_URL/handsets?operation=list&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&status=Connected&inUse=false&os=Android&responseFormat=xml" > "$handsets_f"
+curl -s -N "$API_SVCS_URL/handsets?operation=list&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&status=Connected&inUse=false&os=Android&manufacturer=Samsung&responseFormat=xml" > "$handsets_f"
 waitUntilFileClosed "$handsets_f"
 
 ## NEED to add check for total available vs MAX_DEVICES requested
