@@ -56,8 +56,10 @@ fi
 TEST_SCOPE_URLPARAM=""
 if [[ $TEST_SCOPE != "" ]]
 then
-    TEST_SCOPE_URLPARAM=$("&param.filterByScope=$TEST_SCOPE")
+    TEST_SCOPE_URLPARAM="&param.filterByScope=$TEST_SCOPE"
 fi
+
+echo "TEST_SCOPE_URLPARAM: $TEST_SCOPE_URLPARAM"
 
 echo "Beginning main workflow..."
 
