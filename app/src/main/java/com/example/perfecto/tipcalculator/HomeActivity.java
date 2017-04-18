@@ -16,7 +16,13 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
     }
 
-    public void btn_calc_click(View view) {
+    public void btn_home_calc_click(View view) {
         startActivity(new Intent(this, CalcTipActivity.class));
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+    }
+
+    public void btn_home_manage_click(View view) {
+        startActivity(new Intent(this, FlexViewActivity.class));
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 }

@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.perfecto.tipcalculator">
 
+    <instrumentation
+        android:name=".PerfectoEspressoRunner"
+        android:label="CustomRunner for Perfecto Espresso"
+        android:targetPackage="com.example.perfecto.tipcalculator" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -29,14 +34,15 @@
         <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PhotoActivity"></activity>
+        <activity android:name=".PhotoActivity" />
+        <activity
+            android:name=".FlexViewActivity"
+            android:label="@string/title_activity_flex_view"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
-
-    <instrumentation android:name=".PerfectoEspressoRunner"
-        android:targetPackage="com.example.perfecto.tipcalculator"
-        android:label="CustomRunner for Perfecto Espresso" />
 
 </manifest>

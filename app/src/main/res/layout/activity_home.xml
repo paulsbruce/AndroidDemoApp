@@ -14,8 +14,17 @@
         android:text="Calculate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_calc"
+        android:id="@+id/btn_home_calc"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="btn_calc_click" />
+        android:layout_alignParentLeft="true"
+        android:onClick="btn_home_calc_click" />
+
+    <Button
+        android:text="Manage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_home_manage"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:onClick="btn_home_manage_click" />
 </RelativeLayout>
