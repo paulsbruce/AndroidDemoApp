@@ -7,11 +7,19 @@ node {
             sh 'git submodule update --init'
         }
 
-        stage('Build') {
-            sh "./gradlew clean assembleDebug assembleAndroidTest -PBUILD_NUMBER=${env.BUILD_NUMBER}"
+        stage('Clean Project') {
+            sh "./gradlew clean -PBUILD_NUMBER=${env.BUILD_NUMBER}"
         }
 
-        stage('Smoke Test') {
+        stage('Build Debug APK') {
+            sh "./gradlew assembleDebug -PBUILD_NUMBER=${env.BUILD_NUMBER}"
+        }
+
+        stage('Build Espresso Tests') {
+            sh "./gradlew assembleAndroidTest -PBUILD_NUMBER=${env.BUILD_NUMBER}"
+        }
+
+        stage('Run UI Smoke Test') {
             sh "./Jenkins/callPerfectoFromPipeline.sh"
         }
 

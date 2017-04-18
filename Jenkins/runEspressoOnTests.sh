@@ -10,6 +10,7 @@ REPOSITORY_PATH="$7"
 MAX_DEVICES="$8"
 SCRIPT_NAME="$9"
 REPORTING_API_KEY="$10"
+TEST_SCOPE="$11"
 
 APP_NAME="$BUILD_VARIANT.apk"
 APP_FILEPATH="$WORKSPACE/app/build/outputs/apk/$APP_NAME"
@@ -50,6 +51,12 @@ if [ ! -f $TEST_FILEPATH ]
 then
   echo "Could not find test binary: $TEST_FILEPATH" >&2
   err_handler 2
+fi
+
+TEST_SCOPE_URLPARAM=""
+if [[ $TEST_SCOPE != "" ]]
+then
+    TEST_SCOPE_URLPARAM=$("&param.filterByScope=$TEST_SCOPE")
 fi
 
 echo "Beginning main workflow..."
@@ -221,7 +228,7 @@ function async_execute() {
     fi
 
     echo "async execute on handset: " $HANDSET_ID
-    curl -s -N "$API_SVCS_URL/executions/$EXECUTION_ID?operation=command&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&command=espresso&subcommand=execute&param.handsetId=$HANDSET_ID&param.testPackage=$TEST_PACKAGE&param.debugApp=$APP_NAME&param.testApp=$TEST_NAME&param.filterByScope=small&param.failOnError=True&param.reportFormat=Raw&responseFormat=json" > "$tmpfile"
+    curl -s -N "$API_SVCS_URL/executions/$EXECUTION_ID?operation=command&user=$PERFECTO_USERNAME&password=$PERFECTO_PASSWORD&command=espresso&subcommand=execute&param.handsetId=$HANDSET_ID&param.testPackage=$TEST_PACKAGE&param.debugApp=$APP_NAME&param.testApp=$TEST_NAME$TEST_SCOPE_URLPARAM&param.failOnError=True&param.reportFormat=Raw&responseFormat=json" > "$tmpfile"
     sleep 1
     waitUntilFileClosed "$tmpfile"
     local RESULT_CODE=$(getJsonPath $tmpfile "flowEndCode")
