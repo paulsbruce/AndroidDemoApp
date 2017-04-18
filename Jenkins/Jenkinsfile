@@ -20,7 +20,7 @@ node {
         }
 
         stage('Run UI Smoke Test') {
-            sh "./Jenkins/callPerfectoFromPipeline.sh"
+            sh "chmod u+x ./Jenkins/callPerfectoFromPipeline.sh && ./Jenkins/callPerfectoFromPipeline.sh"
         }
 
         stage('Archive Artifacts') {
