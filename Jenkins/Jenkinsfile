@@ -1,7 +1,5 @@
 node {
 
-    agent any
-
     try {
 
         stages {
