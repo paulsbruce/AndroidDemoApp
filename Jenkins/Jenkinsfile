@@ -2,43 +2,40 @@ node {
 
     try {
 
-        stages {
-
-            stage('Checkout') {
-                steps {
-                    checkout scm
-                    sh 'git submodule update --init'
-                }
+        stage('Checkout') {
+            steps {
+                checkout scm
+                sh 'git submodule update --init'
             }
+        }
 
-            stage('Build') {
-                steps {
-                    sh "./gradlew clean assembleDebug assembleAndroidTest -PBUILD_NUMBER=${env.BUILD_NUMBER}"
-                }
+        stage('Build') {
+            steps {
+                sh "./gradlew clean assembleDebug assembleAndroidTest -PBUILD_NUMBER=${env.BUILD_NUMBER}"
             }
+        }
 
-            /*
-            stage('Smoke Test') {
-                steps {
-                    sh '''
-                        #!/bin/bash
-                        GIT_NAME=$(git --no-pager show -s --format='%an' $GIT_COMMIT)
-                        GIT_EMAIL=$(git --no-pager show -s --format='%ae' $GIT_COMMIT)
-                        echo "CONTRIBUTOR: $GIT_NAME $GIT_EMAIL ($GIT_COMMIT)"
-                        cd ${WORKSPACE}
-                        curl -s https://raw.githubusercontent.com/paulsbruce/AndroidDemoApp/master/Jenkins/runSmallTests.sh > ./Perfecto_API.sh
-                        chmod u+x ./Perfecto_API.sh
-                        bash Perfecto_API.sh "${WORKSPACE}" "app-debug" "com.example.perfecto.tipcalculator.test" "${PERFECTO_CLOUD}" "${PERFECTO_USERNAME}" "${PERFECTO_PASSWORD}" "/" "2" "$GIT_EMAIL" "${PERFECTO_REPORTING_KEY}"
-                        exit $?
-                    '''
-                }
+        /*
+        stage('Smoke Test') {
+            steps {
+                sh '''
+                    #!/bin/bash
+                    GIT_NAME=$(git --no-pager show -s --format='%an' $GIT_COMMIT)
+                    GIT_EMAIL=$(git --no-pager show -s --format='%ae' $GIT_COMMIT)
+                    echo "CONTRIBUTOR: $GIT_NAME $GIT_EMAIL ($GIT_COMMIT)"
+                    cd ${WORKSPACE}
+                    curl -s https://raw.githubusercontent.com/paulsbruce/AndroidDemoApp/master/Jenkins/runSmallTests.sh > ./Perfecto_API.sh
+                    chmod u+x ./Perfecto_API.sh
+                    bash Perfecto_API.sh "${WORKSPACE}" "app-debug" "com.example.perfecto.tipcalculator.test" "${PERFECTO_CLOUD}" "${PERFECTO_USERNAME}" "${PERFECTO_PASSWORD}" "/" "2" "$GIT_EMAIL" "${PERFECTO_REPORTING_KEY}"
+                    exit $?
+                '''
             }
-            */
+        }
+        */
 
-            stage('Archive Artifacts') {
-                steps {
-                    archiveArtifacts artifacts: 'app/build/outputs/apk/*.apk', fingerprint: true
-                }
+        stage('Archive Artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'app/build/outputs/apk/*.apk', fingerprint: true
             }
         }
 
