@@ -296,6 +296,7 @@ rm "$handsets_f"
 
 arr=()
 lines=$(cat $EXIT_CODES)
+echo "EXIT_CODES='$EXIT_CODES'"
 for line in $lines; do
    arr+=("$line")
 done
