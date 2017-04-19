@@ -9,8 +9,8 @@ PERFECTO_PASSWORD="$6" # the password of an account with rights to execute the E
 REPOSITORY_PATH="$7"
 MAX_DEVICES="$8"
 SCRIPT_NAME="$9"
-REPORTING_API_KEY="$10"
-ESPRESSO_SCOPE="$11"
+REPORTING_API_KEY="${10}"
+ESPRESSO_SCOPE="${11}"
 
 APP_NAME="$BUILD_VARIANT.apk"
 APP_FILEPATH="$WORKSPACE/app/build/outputs/apk/$APP_NAME"
