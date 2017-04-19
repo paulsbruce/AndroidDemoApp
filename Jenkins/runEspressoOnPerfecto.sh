@@ -54,7 +54,7 @@ then
 fi
 
 TEST_SCOPE_URLPARAM=""
-if [[ $TEST_SCOPE != "" ]]
+if [[ $ESPRESSO_SCOPE != "" ]]
 then
     TEST_SCOPE_URLPARAM="&param.filterByScope=$ESPRESSO_SCOPE"
 fi
