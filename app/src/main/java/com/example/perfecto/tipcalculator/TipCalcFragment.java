@@ -10,9 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.perfecto.tipcalculator.dummy.DummyContent;
-import com.example.perfecto.tipcalculator.dummy.DummyContent.DummyItem;
+import com.example.perfecto.tipcalculator.api.Tip;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,16 +34,6 @@ public class TipCalcFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public TipCalcFragment() {
-    }
-
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static TipCalcFragment newInstance(int columnCount) {
-        TipCalcFragment fragment = new TipCalcFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -69,7 +59,7 @@ public class TipCalcFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyTipCalcRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyTipCalcRecyclerViewAdapter(new ArrayList<Tip>(), mListener));
         }
         return view;
     }
@@ -104,6 +94,6 @@ public class TipCalcFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Tip item);
     }
 }

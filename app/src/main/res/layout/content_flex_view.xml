@@ -7,4 +7,5 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 app:layout_behavior="@string/appbar_scrolling_view_behavior"
 tools:context="com.example.perfecto.tipcalculator.FlexViewActivity"
-tools:showIn="@layout/activity_flex_view"/>
+tools:showIn="@layout/activity_flex_view">
+</FrameLayout>

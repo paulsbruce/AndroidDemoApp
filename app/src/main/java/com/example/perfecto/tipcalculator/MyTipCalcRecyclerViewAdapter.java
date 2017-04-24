@@ -7,45 +7,41 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.perfecto.tipcalculator.TipCalcFragment.OnListFragmentInteractionListener;
-import com.example.perfecto.tipcalculator.dummy.DummyContent.DummyItem;
+import com.example.perfecto.tipcalculator.api.Tip;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
-public class MyTipCalcRecyclerViewAdapter extends RecyclerView.Adapter<MyTipCalcRecyclerViewAdapter.ViewHolder> {
+public class MyTipCalcRecyclerViewAdapter extends RecyclerView.Adapter<MyTipCalcRecyclerViewAdapter.TipViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Tip> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyTipCalcRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyTipCalcRecyclerViewAdapter(List<Tip> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TipViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_tipcalc, parent, false);
-        return new ViewHolder(view);
+        return new TipViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+    public void onBindViewHolder(final TipViewHolder holder, int position) {
+        holder.tip = mValues.get(position);
+        holder.li_subtotal.setText(mValues.get(position).getSubtotal().toString());
+        holder.li_percent.setText(mValues.get(position).getPercent().toString());
+        holder.li_split.setText(mValues.get(position).getSplit());
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.li_subtotal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.tip);
                 }
             }
         });
@@ -56,22 +52,24 @@ public class MyTipCalcRecyclerViewAdapter extends RecyclerView.Adapter<MyTipCalc
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+    public static class TipViewHolder extends RecyclerView.ViewHolder {
 
-        public ViewHolder(View view) {
-            super(view);
-            mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+        Tip tip;
+
+        TextView li_subtotal;
+        TextView li_percent;
+        TextView li_split;
+
+        public TipViewHolder(View v) {
+            super(v);
+            li_subtotal = (TextView) v.findViewById(R.id.li_subtotal);
+            li_percent = (TextView) v.findViewById(R.id.li_percent);
+            li_split = (TextView) v.findViewById(R.id.li_split);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + li_subtotal.getText() + "'";
         }
     }
 }

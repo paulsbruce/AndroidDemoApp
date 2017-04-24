@@ -46,19 +46,26 @@ configurations {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    }
 
-    // Reportium SDK
-    //compile "com.perfecto.reporting-sdk:reportium-java:1.1.10"
-    // Reportium SDK addition for Allure users
-    //compile "com.perfecto.reporting-sdk:reportium-allure-integration:1.1.10"
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
     compile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
     compile 'com.android.support.test.espresso:espresso-core:2.2.2'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
+
+    // Retrofit & OkHttp
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    // Reportium SDK
+    //compile "com.perfecto.reporting-sdk:reportium-java:1.1.10"
+    // Reportium SDK addition for Allure users
+    //compile "com.perfecto.reporting-sdk:reportium-allure-integration:1.1.10"
+
     testCompile 'junit:junit:4.12'
+    testCompile 'com.github.tomakehurst:wiremock-standalone:2.6.0'
+
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
 }

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.perfecto.tipcalculator">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <instrumentation
         android:name=".PerfectoEspressoRunner"
         android:label="CustomRunner for Perfecto Espresso"
@@ -41,7 +44,7 @@
         <activity android:name=".PhotoActivity" />
         <activity
             android:name=".FlexViewActivity"
-            android:label="@string/title_activity_flex_view"
+            android:label="Tip History"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
