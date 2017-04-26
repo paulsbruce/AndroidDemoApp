@@ -1,4 +1,4 @@
-package com.example.perfecto.tipcalculator.api;
+package com.example.perfecto.tipcalculator.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -12,13 +12,13 @@ import java.util.Date;
 public class Tip {
 
     @SerializedName("id")
-    private int id;
+    private int id = -1;
     @SerializedName("subtotal")
-    private Double subtotal;
+    private Double subtotal = 0d;
     @SerializedName("percent")
-    private Double percent;
+    private Double percent = 0d;
     @SerializedName("split")
-    private int split;
+    private int split = 0;
     @SerializedName("lastUsed")
     private String lastUsed;
 

@@ -1,21 +1,25 @@
 package com.example.perfecto.tipcalculator;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.os.Handler;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
-import com.example.perfecto.tipcalculator.api.Tip;
-import com.example.perfecto.tipcalculator.api.TipsClient;
+import com.example.perfecto.tipcalculator.api.model.Tip;
+import com.example.perfecto.tipcalculator.api.service.TipsServiceInterface;
 import com.example.perfecto.tipcalculator.api.TipsClientBuilder;
-import com.example.perfecto.tipcalculator.api.TipsClientBuilder.TipsResponse;
+import com.example.perfecto.tipcalculator.api.service.TipsServiceManager;
 
+import org.junit.Rule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,44 +31,36 @@ public class FlexViewActivity extends AppCompatActivity
 
     private static final String TAG = FlexViewActivity.class.getSimpleName();
 
-    private TipsClient client;
+    private Logger logger = LoggerFactory.getLogger(FlexViewActivity.class);
+
+    private TipsServiceManager tipsServiceManager;
     private RecyclerView recycler;
+
+    public void setTipsServiceManager(TipsServiceManager mServiceManager) {
+        this.tipsServiceManager = mServiceManager;
+        loadTipsData();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_flex_view);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
-        // Check that the activity is using the layout version with
-        // the fragment_container FrameLayout
         if (findViewById(R.id.content_flex_view) != null) {
 
-            // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
             if (savedInstanceState != null) {
                 return;
             }
 
-            // Create a new Fragment to be placed in the activity layout
             TipCalcFragment firstFragment = new TipCalcFragment();
 
-            // In case this activity was started with special instructions from an
-            // Intent, pass the Intent's extras to the fragment as arguments
             firstFragment.setArguments(getIntent().getExtras());
 
-            // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.content_flex_view, firstFragment).commit();
         }
@@ -72,36 +68,61 @@ public class FlexViewActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Tip item) {
-
+        logger.debug("Interact: {}", item);
     }
+
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        recycler = (RecyclerView) findViewById(R.id.tipcalc_list);
-        connectAndGetApiData();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(tipsServiceManager == null)
+                    tipsServiceManager = new TipsServiceManager("http://paulsbruce-androiddemoappsvc.ngrok.io/");
+                loadTipsData();
+            }
+        }, 2000);
+
 
     }
 
-    private void connectAndGetApiData() {
-        client = TipsClientBuilder.build();
-        Call<TipsResponse> call = client.getTips();
-        call.enqueue(new Callback<TipsResponse>() {
-            @Override
-            public void onResponse(Call<TipsResponse> call, Response<TipsResponse> response) {
-                List<Tip> tips = response.body().getResults();
-                if(recycler != null)
-                    recycler.setAdapter(new TipAdapter(tips, R.layout.fragment_tipcalc, getApplicationContext()));
-                Log.d(TAG, "Number of movies received: " + tips.size());
-            }
+    private void loadTipsData() {
+        //load data in a background thread
+        new GetTipsTask((RecyclerView)findViewById(R.id.tipcalc_list)).execute(tipsServiceManager);
+    }
 
-            @Override
-            public void onFailure(Call<TipsResponse> call, Throwable t) {
-                Log.e(TAG, t.toString());
-            }
-        });
+    private class GetTipsTask extends AsyncTask<TipsServiceManager, Object, Boolean> {
 
+        private List<Tip> tips = new ArrayList<Tip>();
+        private RecyclerView recycler = null;
+
+        public GetTipsTask(RecyclerView recycler) {
+            this.recycler = recycler;
+        }
+
+        protected Boolean doInBackground(TipsServiceManager... tipsServiceManager) {
+
+            try {
+                tips = tipsServiceManager[0].getTips();
+                return true;
+            } catch(IOException e) {
+                Log.e(TAG, e.toString());
+            }
+            return false;
+        }
+
+        protected void onProgressUpdate(Object... progress) {
+            //setProgressPercent(progress[0]);
+        }
+
+        protected void onPostExecute(Boolean success) {
+            if(success) {
+                recycler.setAdapter(new TipAdapter(tips, R.layout.fragment_tipcalc, getApplicationContext()));
+                Log.d(TAG, "Number of tips received: " + tips.size());
+            }
+        }
     }
 
 }

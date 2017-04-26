@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.perfecto.tipcalculator.api.Tip;
+import com.example.perfecto.tipcalculator.api.model.Tip;
 
 import java.util.List;
 
@@ -40,8 +40,7 @@ public class TipAdapter extends RecyclerView.Adapter<TipAdapter.TipViewHolder> {
     }
 
     @Override
-    public TipAdapter.TipViewHolder onCreateViewHolder(ViewGroup parent,
-                                                            int viewType) {
+    public TipAdapter.TipViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(rowLayout, parent, false);
         return new TipViewHolder(view);
     }

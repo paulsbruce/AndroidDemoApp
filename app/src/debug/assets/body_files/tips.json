@@ -1,0 +1,29 @@
+{
+	"response" : {
+		"version":"0.1",
+		"results": [
+			{
+				"subtotal" : 28.73,
+				"percent" : 25,
+				"split" : 2,
+				"lastUsed" : "2017-04-24T18:25:43.511Z",
+				"id": 10
+			},
+			{
+				"bill" : 17.44,
+				"percent" : 20,
+				"split" : 1,
+				"lastUsed" : "2017-04-22T11:25:43.511Z",
+				"id": 20
+			},
+			{
+				"bill" : 106.55,
+				"percent" : 19,
+				"split" : 4,
+				"lastUsed" : "2017-04-23T09:25:43.511Z",
+				"id": 30
+			}
+		]
+	}
+
+}

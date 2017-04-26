@@ -12,9 +12,9 @@ android {
         versionName "1.0"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         //testInstrumentationRunner 'com.example.perfecto.tipcalculator.PerfectoEspressoRunner'//'android.support.test.runner.AndroidJUnitRunner'
-/*
-        multiDexEnabled true
 
+        multiDexEnabled true
+/*
         jackOptions {
             enabled true
             jackInProcess false
@@ -31,11 +31,27 @@ android {
     buildTypes {
         debug {
             testCoverageEnabled = true // gradle 3.3 workaround
+
+            buildConfigField "String", "MOCK_IP", "\"127.0.0.1\""
+            buildConfigField "Integer", "MOCK_PORT", "9998"
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
     }
 }
 
@@ -45,6 +61,9 @@ configurations {
 }
 
 dependencies {
+
+    compile 'com.android.support:multidex:1.0.1'
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     compile 'com.android.support:appcompat-v7:24.2.1'
@@ -55,17 +74,50 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.2.1'
 
     // Retrofit & OkHttp
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile('com.squareup.retrofit2:retrofit:2.1.0') {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    }
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.okhttp3:okhttp:3.5.0'
+    compile "com.squareup.okhttp3:logging-interceptor:3.5.0"
+    compile "org.slf4j:slf4j-api:1.7.12"
+
+    //wiremock
+    androidTestCompile("com.github.tomakehurst:wiremock:2.5.0") {
+        //Using Android Version Instead
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+
+        //Version conflict with our app's slf4j version
+        exclude group: 'org.slf4j', module: 'slf4j-api'
+
+        //Was getting a classpath conflict for org.objectweb.asm.AnnotationVisitor which is a part of 'net.minidev:asm'
+        exclude group: 'org.ow2.asm', module: 'asm'
+
+        //Was getting this warning, so decided to ignore this version included by WireMock.
+        //Warning:Dependency org.json:json:20090211 is ignored as it may be conflicting with the internal version provided by Android.
+        //In case of problem, please repackage with jarjar to change the class packages
+        exclude group: 'org.json', module: 'json'
+    }
+    androidTestCompile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+    //androidTestCompile 'commons-io:commons-io:2.4'
+
     // Reportium SDK
     //compile "com.perfecto.reporting-sdk:reportium-java:1.1.10"
     // Reportium SDK addition for Allure users
     //compile "com.perfecto.reporting-sdk:reportium-allure-integration:1.1.10"
 
     testCompile 'junit:junit:4.12'
-    testCompile 'com.github.tomakehurst:wiremock-standalone:2.6.0'
 
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
+
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
+        // Necessary to avoid version conflicts
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'design'
+    }
+
 }

@@ -1,10 +1,6 @@
 package com.example.perfecto.tipcalculator.api;
 
-import android.support.test.espresso.core.deps.dagger.Provides;
-
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
+import com.example.perfecto.tipcalculator.api.service.TipsServiceInterface;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -16,11 +12,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class TipsClientBuilder {
 
-    public static TipsClient build() {
+    public static TipsServiceInterface build() {
 
         String API_BASE_URL = "http://paulsbruce-androiddemoappsvc.ngrok.io/";
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+                //.proxy(new Proxy(Proxy.Type.HTTP,  new InetSocketAddress("paulsbruce-androiddemoappproxy.ngrok.io", 80)))
+        ;
 
         Retrofit.Builder builder =
                 new Retrofit.Builder()
@@ -36,19 +34,11 @@ public class TipsClientBuilder {
                         )
                         .build();
 
-        TipsClient client =  retrofit.create(TipsClient.class);
+        TipsServiceInterface client =  retrofit.create(TipsServiceInterface.class);
 
         return client;
     }
 
-    public class TipsResponse {
 
-        @SerializedName("results")
-        private List<Tip> results;
-
-        public List<Tip> getResults() {
-            return this.results;
-        }
-    }
 
 }

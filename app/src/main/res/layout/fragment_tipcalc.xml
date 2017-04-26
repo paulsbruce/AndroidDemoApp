@@ -3,47 +3,48 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:rowCount="1"
-    android:columnCount="6">
+    android:columnCount="6"
+    android:id="@+id/li_tip_container">
 
     <TextView
         android:text="Subtotal: "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="1dp"
+        android:layout_margin="3dp"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <TextView
         android:id="@+id/li_subtotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="1dp"
+        android:layout_margin="3dp"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <TextView
         android:text="Tip %: "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="1dp"
+        android:layout_margin="3dp"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <TextView
         android:id="@+id/li_percent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="1dp"
+        android:layout_margin="3dp"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <TextView
         android:text="Split: "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="1dp"
+        android:layout_margin="3dp"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <TextView
         android:id="@+id/li_split"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="1dp"
+        android:layout_margin="3dp"
         android:textAppearance="?attr/textAppearanceListItem" />
 </GridLayout>
