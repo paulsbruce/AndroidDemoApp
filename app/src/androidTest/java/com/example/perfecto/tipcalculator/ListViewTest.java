@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.contrib.RecyclerViewActions;
+//import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.filters.SdkSuppress;
 import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
@@ -35,8 +35,6 @@ import static org.hamcrest.Matchers.greaterThan;
 @RunWith(AndroidJUnit4.class)
 public class ListViewTest {
 
-    private Logger logger = LoggerFactory.getLogger(ListViewTest.class);
-
     @Rule
     public ActivityTestRule<FlexViewActivity> mActivityRule = new ActivityTestRule<FlexViewActivity>(FlexViewActivity.class);
 
@@ -54,9 +52,9 @@ public class ListViewTest {
                         .withStatus(200)
                         .withBody(jsonBody)));
 
-        String serviceEndpoint = "http://"+BuildConfig.MOCK_IP+":" + BuildConfig.MOCK_PORT;
-        logger.debug("WireMock Endpoint: " + serviceEndpoint);
-        activity.setTipsServiceManager(new TipsServiceManager(serviceEndpoint));
+        activity.setTipsServiceManager(new TipsServiceManager(
+                "http://"+BuildConfig.MOCK_IP+":" + BuildConfig.MOCK_PORT
+        ));
     }
 
     @Test
@@ -65,8 +63,7 @@ public class ListViewTest {
         onView(withId(R.id.tipcalc_list))
                 .check(new RecyclerViewItemCountAssertion(greaterThan(0)));
 
-        onView(withId(R.id.tipcalc_list))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+        //onView(withId(R.id.tipcalc_list)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
 
     }
 

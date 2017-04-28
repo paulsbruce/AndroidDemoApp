@@ -33,7 +33,8 @@ public class FlexViewActivity extends AppCompatActivity
 
     private Logger logger = LoggerFactory.getLogger(FlexViewActivity.class);
 
-    private TipsServiceManager tipsServiceManager;
+    private TipsServiceManager tipsServiceManager = new TipsServiceManager("http://paulsbruce-AndroidDemoAppSvc.ngrok.io");
+
     private RecyclerView recycler;
 
     public void setTipsServiceManager(TipsServiceManager mServiceManager) {
@@ -76,16 +77,7 @@ public class FlexViewActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(tipsServiceManager == null)
-                    tipsServiceManager = new TipsServiceManager("http://paulsbruce-androiddemoappsvc.ngrok.io/");
-                loadTipsData();
-            }
-        }, 2000);
-
-
+        loadTipsData();
     }
 
     private void loadTipsData() {
