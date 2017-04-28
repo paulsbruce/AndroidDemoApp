@@ -1,5 +1,6 @@
 package com.example.perfecto.tipcalculator;
 
+import android.support.test.filters.LargeTest;
 import android.support.test.filters.SdkSuppress;
 import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
@@ -31,7 +32,7 @@ public class CompleteWorkflowTest {
 
     @KeySmokeTest
     @SdkSuppress(minSdkVersion=17)
-    @SmallTest
+    @LargeTest
     @Test
     public void clickIntoCalcAndRunBasicTest() {
 

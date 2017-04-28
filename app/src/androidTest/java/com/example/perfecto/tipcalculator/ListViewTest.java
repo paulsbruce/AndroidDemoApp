@@ -58,6 +58,7 @@ public class ListViewTest {
     }
 
     @Test
+    @SmallTest
     public void clickAndVerify() {
 
         onView(withId(R.id.tipcalc_list))
