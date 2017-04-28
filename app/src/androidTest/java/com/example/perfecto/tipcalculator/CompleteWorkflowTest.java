@@ -30,7 +30,7 @@ public class CompleteWorkflowTest {
     @Rule
     public ActivityTestRule<HomeActivity> mActivityRule = new ActivityTestRule<>(HomeActivity.class); //
 
-    @KeySmokeTest
+    //@KeySmokeTest
     @SdkSuppress(minSdkVersion=17)
     @LargeTest
     @Test

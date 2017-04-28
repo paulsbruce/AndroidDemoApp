@@ -57,7 +57,7 @@ public class SeekBarExampleTest {
     }
 
     @ActiveDebugTest
-    @KeySmokeTest
+    //@KeySmokeTest
     @Test
     public void treatControlsLikeTheEventBasedAnimalsTheyAre() {
         onView(withId(R.id.bill_value))

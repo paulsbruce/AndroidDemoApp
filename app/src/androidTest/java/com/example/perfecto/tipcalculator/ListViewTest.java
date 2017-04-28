@@ -38,6 +38,18 @@ public class ListViewTest {
     @Rule
     public ActivityTestRule<FlexViewActivity> mActivityRule = new ActivityTestRule<FlexViewActivity>(FlexViewActivity.class);
 
+    @Test
+    @KeySmokeTest
+    public void clickAndVerify() {
+
+        onView(withId(R.id.tipcalc_list))
+                .check(new RecyclerViewItemCountAssertion(greaterThan(0)));
+
+        //onView(withId(R.id.tipcalc_list)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+
+    }
+
+    /*
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(BuildConfig.MOCK_PORT);
 
@@ -56,17 +68,6 @@ public class ListViewTest {
                 "http://"+BuildConfig.MOCK_IP+":" + BuildConfig.MOCK_PORT
         ));
     }
-
-    @Test
-    @SmallTest
-    public void clickAndVerify() {
-
-        onView(withId(R.id.tipcalc_list))
-                .check(new RecyclerViewItemCountAssertion(greaterThan(0)));
-
-        //onView(withId(R.id.tipcalc_list)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
-
-    }
-
+    */
 
 }
