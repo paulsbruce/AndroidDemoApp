@@ -100,8 +100,9 @@ dependencies {
         //In case of problem, please repackage with jarjar to change the class packages
         exclude group: 'org.json', module: 'json'
     }
+    androidTestCompile 'org.eclipse.jetty:jetty-server:9.2.21.v20170120'
     androidTestCompile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
-    //androidTestCompile 'commons-io:commons-io:2.4'
+    androidTestCompile 'commons-io:commons-io:2.4'
 
     // Reportium SDK
     //compile "com.perfecto.reporting-sdk:reportium-java:1.1.10"
