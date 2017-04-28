@@ -7,11 +7,11 @@ node {
             sh 'git submodule update --init'
         }
 
-        /*
+
         stage('Clean Project') {
             sh "./gradlew clean -PBUILD_NUMBER=${env.BUILD_NUMBER}"
         }
-        */
+        
 
         stage('Build Debug APK') {
             sh "./gradlew assembleDebug -PBUILD_NUMBER=${env.BUILD_NUMBER}"
