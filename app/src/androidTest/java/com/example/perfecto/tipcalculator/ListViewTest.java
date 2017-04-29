@@ -13,7 +13,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.example.perfecto.annotations.KeySmokeTest;
 import com.example.perfecto.tipcalculator.api.service.TipsServiceManager;
 import com.example.perfecto.tipcalculator.util.RecyclerViewItemCountAssertion;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+//import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -25,10 +25,10 @@ import org.slf4j.LoggerFactory;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
+//import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+//import static com.github.tomakehurst.wiremock.client.WireMock.get;
+//import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+//import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.example.perfecto.tipcalculator.util.AssetReaderUtil.asset;
 import static org.hamcrest.Matchers.greaterThan;
 
