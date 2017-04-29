@@ -84,6 +84,7 @@ dependencies {
     compile "com.squareup.okhttp3:logging-interceptor:3.5.0"
     compile "org.slf4j:slf4j-api:1.7.12"
 
+    /*
     //wiremock
     androidTestCompile("com.github.tomakehurst:wiremock:2.5.0") {
         //Using Android Version Instead
@@ -104,6 +105,7 @@ dependencies {
     compile 'org.eclipse.jetty:jetty-jmx:9.2.13.v20150730'
     androidTestCompile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
     androidTestCompile 'commons-io:commons-io:2.4'
+    */
 
     // Reportium SDK
     //compile "com.perfecto.reporting-sdk:reportium-java:1.1.10"

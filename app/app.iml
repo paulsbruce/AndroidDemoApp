@@ -118,69 +118,39 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 24 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" scope="TEST" name="json-smart-2.2.1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-24.2.1" level="project" />
     <orderEntry type="library" exported="" name="support-compat-24.2.1" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="json-path-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="animated-vector-drawable-24.2.1" level="project" />
     <orderEntry type="library" exported="" name="support-fragment-24.2.1" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="commons-io-2.4" level="project" />
     <orderEntry type="library" exported="" name="runner-0.5" level="project" />
     <orderEntry type="library" exported="" name="espresso-idling-resource-2.2.2" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="antlr4-runtime-4.5.1-1" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="jetty-continuation-9.2.13.v20150730" level="project" />
     <orderEntry type="library" exported="" name="hamcrest-library-1.3" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="jopt-simple-4.9" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="xmlunit-legacy-2.3.0" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="jetty-servlet-9.2.13.v20150730" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="commons-lang3-3.4" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="jackson-annotations-2.6.1" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="jetty-security-9.2.13.v20150730" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="handlebars-4.0.6" level="project" />
+    <orderEntry type="library" exported="" name="hamcrest-integration-1.3" level="project" />
+    <orderEntry type="library" exported="" name="jsr305-2.0.1" level="project" />
     <orderEntry type="library" exported="" name="design-24.2.1" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="multidex-instrumentation-1.0.1" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="guava-18.0" level="project" />
+    <orderEntry type="library" exported="" name="support-media-compat-24.2.1" level="project" />
+    <orderEntry type="library" exported="" name="espresso-core-2.2.2" level="project" />
     <orderEntry type="library" exported="" name="support-core-ui-24.2.1" level="project" />
     <orderEntry type="library" exported="" name="exposed-instrumentation-api-publish-0.5" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-24.2.1" level="project" />
-    <orderEntry type="library" exported="" name="appcompat-v7-24.2.1" level="project" />
-    <orderEntry type="library" exported="" name="javax.annotation-api-1.2" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="xmlunit-core-2.3.0" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="wiremock-2.5.0" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="jetty-xml-9.2.13.v20150730" level="project" />
-    <orderEntry type="library" exported="" name="javawriter-2.1.1" level="project" />
-    <orderEntry type="library" exported="" name="okhttp-3.5.0" level="project" />
-    <orderEntry type="library" exported="" name="logging-interceptor-3.5.0" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="jetty-http-9.2.13.v20150730" level="project" />
-    <orderEntry type="library" exported="" name="animated-vector-drawable-24.2.1" level="project" />
-    <orderEntry type="library" exported="" name="jetty-util-9.2.13.v20150730" level="project" />
-    <orderEntry type="library" exported="" name="hamcrest-integration-1.3" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="jetty-webapp-9.2.13.v20150730" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="httpclient-android-4.3.5.1" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="jetty-io-9.2.13.v20150730" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="commons-collections4-4.0" level="project" />
-    <orderEntry type="library" exported="" name="jsr305-2.0.1" level="project" />
-    <orderEntry type="library" exported="" name="support-media-compat-24.2.1" level="project" />
-    <orderEntry type="library" exported="" name="espresso-core-2.2.2" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="jetty-server-9.2.13.v20150730" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="jackson-core-2.6.1" level="project" />
     <orderEntry type="library" exported="" name="rules-0.5" level="project" />
+    <orderEntry type="library" exported="" name="appcompat-v7-24.2.1" level="project" />
     <orderEntry type="library" exported="" name="support-vector-drawable-24.2.1" level="project" />
+    <orderEntry type="library" exported="" name="javax.annotation-api-1.2" level="project" />
     <orderEntry type="library" exported="" name="support-core-utils-24.2.1" level="project" />
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
     <orderEntry type="library" exported="" name="retrofit-2.1.0" level="project" />
     <orderEntry type="library" exported="" name="gson-2.7" level="project" />
     <orderEntry type="library" exported="" name="converter-gson-2.1.0" level="project" />
     <orderEntry type="library" exported="" name="okio-1.11.0" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="jackson-databind-2.6.1" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-24.2.1" level="project" />
     <orderEntry type="library" exported="" name="multidex-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="javawriter-2.1.1" level="project" />
     <orderEntry type="library" exported="" name="hamcrest-core-1.3" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="javax.servlet-api-3.1.0" level="project" />
+    <orderEntry type="library" exported="" name="okhttp-3.5.0" level="project" />
+    <orderEntry type="library" exported="" name="logging-interceptor-3.5.0" level="project" />
     <orderEntry type="library" exported="" name="junit-4.12" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="zjsonpatch-0.2.1" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="accessors-smart-1.1" level="project" />
-    <orderEntry type="library" exported="" name="jetty-jmx-9.2.13.v20150730" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="jetty-servlets-9.2.13.v20150730" level="project" />
     <orderEntry type="library" exported="" name="slf4j-api-1.7.12" level="project" />
   </component>
 </module>
