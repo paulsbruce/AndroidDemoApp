@@ -30,8 +30,8 @@ public class BasicTest {
     @Rule
     public ActivityTestRule<CalcTipActivity> mActivityRule = new ActivityTestRule<>(CalcTipActivity.class); //
 
-    @KeySmokeTest
     //@RequiresDevice
+    @KeySmokeTest
     @SdkSuppress(minSdkVersion=17)
     @SmallTest
     @Test
